@@ -1,6 +1,8 @@
 package com.example_fbf.demo_fbf.controller;
 
 import com.example_fbf.demo_fbf.dto.FoodDto;
+import com.example_fbf.demo_fbf.dto.FoodSalesDto;
+import com.example_fbf.demo_fbf.service.FoodSalesService;
 import com.example_fbf.demo_fbf.service.FoodService;
 import com.example_fbf.demo_fbf.wrapper.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FoodController {
     private final FoodService foodService;
+    private final FoodSalesService foodSalesService;
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<FoodDto>>> getAllFoods() {
@@ -41,6 +44,12 @@ public class FoodController {
 
         List<FoodDto> foodList = foodService.getFoodsByCategories(categoryNames);
         return ResponseEntity.ok(new ApiResponse<>(true, "Foods found", foodList));
+    }
+
+    @GetMapping("/top-sold")
+    public ResponseEntity<ApiResponse<List<FoodSalesDto>>> getTopSoldFoods() {
+        List<FoodSalesDto> topFoods = foodSalesService.getTopSoldFoods();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Top sold foods", topFoods));
     }
 
     @PostMapping

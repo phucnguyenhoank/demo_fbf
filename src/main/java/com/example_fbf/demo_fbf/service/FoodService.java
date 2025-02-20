@@ -9,7 +9,6 @@ import com.example_fbf.demo_fbf.repository.CategoryRepository;
 import com.example_fbf.demo_fbf.repository.FoodRepository;
 import com.example_fbf.demo_fbf.repository.FoodSizeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
