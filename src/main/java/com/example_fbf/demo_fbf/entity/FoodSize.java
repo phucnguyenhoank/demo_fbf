@@ -15,6 +15,7 @@ public class FoodSize {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @Column(nullable = false, unique = true)
+    private String sizeName; // Small, Medium, Large, Extra Large
 }
 

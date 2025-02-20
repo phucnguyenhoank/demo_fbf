@@ -24,8 +24,9 @@ public class Food {
     private String description;
     private String imageUrl;
 
-    @Column(nullable = false, unique = true)
-    private String sizeName; // Small, Medium, Large, Extra Large
+    @ManyToOne
+    @JoinColumn(name = "food_size_id", nullable = false)
+    private FoodSize foodSize;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
