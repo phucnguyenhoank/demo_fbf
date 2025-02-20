@@ -27,6 +27,22 @@ public class FoodController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Food found", food));
     }
 
+    @GetMapping("/category/{categoryName}")
+    public ResponseEntity<ApiResponse<List<FoodDto>>> getFoodByCategory(
+            @PathVariable String categoryName) {
+
+        List<FoodDto> foodList = foodService.getFoodsByCategory(categoryName);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Foods found", foodList));
+    }
+
+    @GetMapping("/categories/{categoryNames}")
+    public ResponseEntity<ApiResponse<List<FoodDto>>> getFoodByCategories(
+            @PathVariable List<String> categoryNames) {
+
+        List<FoodDto> foodList = foodService.getFoodsByCategories(categoryNames);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Foods found", foodList));
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponse<FoodDto>> createFood(@RequestBody FoodDto foodDto) {
         FoodDto createdFood = foodService.createFood(foodDto);

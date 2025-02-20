@@ -36,6 +36,16 @@ public class FoodService {
         return foodMapper.toDto(food);
     }
 
+    public List<FoodDto> getFoodsByCategory(String categoryName) {
+        List<Food> foods = foodRepository.findByCategoryName(categoryName);
+        return foods.stream().map(foodMapper::toDto).collect(Collectors.toList());
+    }
+
+    public List<FoodDto> getFoodsByCategories(List<String> categoryNames) {
+        List<Food> foods = foodRepository.findByCategoryNameIn(categoryNames);
+        return foods.stream().map(foodMapper::toDto).collect(Collectors.toList());
+    }
+
     public FoodDto createFood(FoodDto foodDto) {
         Food food = foodMapper.toEntity(foodDto);
         Food savedFood = foodRepository.save(food);
