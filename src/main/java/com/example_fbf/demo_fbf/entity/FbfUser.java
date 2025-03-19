@@ -3,6 +3,8 @@ package com.example_fbf.demo_fbf.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "fbf_user")
 @Getter
@@ -15,17 +17,17 @@ public class FbfUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String username;
-
-    @Column(nullable = false)
     private String password;
-
-    @Column(nullable = false, unique = true)
     private String email;
-
     private String name;
     private String phoneNumber;
     private String address;
+
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
+
+    @OneToMany(mappedBy = "user")
+    private List<FbfOrder> orders;
 }
 

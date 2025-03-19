@@ -3,6 +3,8 @@ package com.example_fbf.demo_fbf.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "food")
 @Getter
@@ -15,20 +17,14 @@ public class Food {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private Double price;
-
     private String description;
     private String imageUrl;
 
     @ManyToOne
-    @JoinColumn(name = "food_size_id", nullable = false)
-    private FoodSize foodSize;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(mappedBy = "food")
+    private List<FoodSize> sizes;
 }

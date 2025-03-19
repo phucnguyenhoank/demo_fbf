@@ -3,6 +3,9 @@ package com.example_fbf.demo_fbf.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -17,24 +20,8 @@ public class DiscountCode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String code;
-
-    @Column(nullable = false)
     private Double discountPercentage;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date expirationDate;
-
-    @Column(nullable = false)
-    private Boolean expired;
-
-    @ManyToOne
-    @JoinColumn(name = "order_item_id", nullable = true)
-    private OrderItem orderItem;
-
-    @ManyToOne
-    @JoinColumn(name = "fbf_order_id", nullable = true)
-    private FbfOrder order;
+    private LocalDateTime expirationDate; // Null if it never expires
 }
 

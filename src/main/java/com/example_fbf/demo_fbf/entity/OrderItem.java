@@ -3,6 +3,8 @@ package com.example_fbf.demo_fbf.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "order_item")
 @Getter
@@ -15,18 +17,16 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Double price;
+    @ManyToOne
+    @JoinColumn(name = "food_size_id")
+    private FoodSize foodSize;
 
-    @Column(nullable = false)
+    private Double price;
+    private Double discountPercentage; // Copied from CartItem
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "fbf_order_id", nullable = false)
+    @JoinColumn(name = "fbf_order_id")
     private FbfOrder order;
-
-    @ManyToOne
-    @JoinColumn(name = "cart_item_id", nullable = false)
-    private CartItem cartItem;
 }
 
