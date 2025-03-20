@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FoodDto {
+public class FbfUserDto {
     private Long id;
+    private String username;
+    private String email;
     private String name;
-    private String description;
-    private String imageUrl;
-    private CategoryDto category;
-    private List<FoodSizeDto> sizes;
+    private String phoneNumber;
+    private String address;
 }

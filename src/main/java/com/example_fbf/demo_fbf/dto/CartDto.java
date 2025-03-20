@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FoodDto {
+public class CartDto {
     private Long id;
-    private String name;
-    private String description;
-    private String imageUrl;
-    private CategoryDto category;
-    private List<FoodSizeDto> sizes;
+    private Long userId;
+    private List<CartItemDto> items;
 }
