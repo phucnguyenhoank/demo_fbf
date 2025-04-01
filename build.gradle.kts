@@ -43,6 +43,11 @@ dependencies {
 	// Enable MapStruct with Spring Boot
 	annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+	// JJWT Dependencies
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
 }
 
 tasks.withType<Test> {
