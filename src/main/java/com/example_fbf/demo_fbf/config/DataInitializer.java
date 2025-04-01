@@ -36,8 +36,8 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // Create multiple users
         List<FbfUser> users = Arrays.asList(
-                new FbfUser(null, "john_doe", "password123", "john@example.com", "John Doe", "1234567890", "123 Main St", null, null),
-                new FbfUser(null, "jane_smith", "pass456", "jane@example.com", "Jane Smith", "0987654321", "456 Park Ave", null, null)
+                new FbfUser(null, "john_doe", "password123", "john@example.com", "John Doe", "1234567890", "123 Main St", FbfRole.FBF_USER, null, null),
+                new FbfUser(null, "jane_smith", "pass456", "jane@example.com", "Jane Smith", "0987654321", "456 Park Ave", FbfRole.FBF_USER, null, null)
         );
         users = userRepository.saveAll(users);
 
