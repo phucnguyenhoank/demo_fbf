@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 public class FbfUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
