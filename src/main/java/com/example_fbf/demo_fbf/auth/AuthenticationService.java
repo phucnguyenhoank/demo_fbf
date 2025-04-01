@@ -4,7 +4,6 @@ import com.example_fbf.demo_fbf.config.JwtService;
 import com.example_fbf.demo_fbf.entity.FbfRole;
 import com.example_fbf.demo_fbf.entity.FbfUser;
 import com.example_fbf.demo_fbf.repository.FbfUserRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
