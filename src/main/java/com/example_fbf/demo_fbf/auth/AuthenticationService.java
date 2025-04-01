@@ -4,6 +4,7 @@ import com.example_fbf.demo_fbf.config.JwtService;
 import com.example_fbf.demo_fbf.entity.FbfRole;
 import com.example_fbf.demo_fbf.entity.FbfUser;
 import com.example_fbf.demo_fbf.repository.FbfUserRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,8 +40,9 @@ public class AuthenticationService {
                 request.getUsername(),
                 request.getPassword()
         ));
-        var fbfUser = fbfUserRepository.findByUsername(request.getUsername()).orElseThrow();
+        var fbfUser = fbfUserRepository.findByUsername(request.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
         var jwtToken = jwtService.generateToken(fbfUser);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
+
 }
