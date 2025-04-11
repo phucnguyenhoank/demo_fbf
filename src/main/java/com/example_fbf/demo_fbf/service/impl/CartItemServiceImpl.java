@@ -39,5 +39,51 @@ public class CartItemServiceImpl implements CartItemService {
         // Save and return the new cart item
         return cartItemRepository.save(cartItem);
     }
+
+    @Override
+    public void deleteCartItem(Long cartId, Long cartItemId) {
+        // Verify the cart exists
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new IllegalArgumentException("Cart not found for id: " + cartId));
+
+        // Verify the cart item exists and belongs to the cart
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new IllegalArgumentException("CartItem not found for id: " + cartItemId));
+
+        if (!cartItem.getCart().getId().equals(cart.getId())) {
+            throw new IllegalArgumentException("CartItem does not belong to this cart");
+        }
+
+        cartItemRepository.delete(cartItem);
+    }
+
+    @Override
+    public CartItem updateCartItem(Long cartId, Long cartItemId, Integer newQuantity, String newSize) {
+        // Verify the cart exists
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new IllegalArgumentException("Cart not found for id: " + cartId));
+
+        // Retrieve the cart item and check ownership
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new IllegalArgumentException("CartItem not found for id: " + cartItemId));
+        if (!cartItem.getCart().getId().equals(cart.getId())) {
+            throw new IllegalArgumentException("CartItem does not belong to this cart");
+        }
+
+        // Update quantity
+        cartItem.setQuantity(newQuantity);
+
+        // Find new FoodSize based on the existing food and the provided size code
+        Long foodId = cartItem.getFoodSize().getFood().getId();
+        FoodSize newFoodSize = foodSizeRepository.findByFoodIdAndSize(foodId, newSize)
+                .orElseThrow(() -> new IllegalArgumentException("FoodSize not found for food id " + foodId + " and size " + newSize));
+
+        // Update foodSize and capture the price and discount at the time of change
+        cartItem.setFoodSize(newFoodSize);
+        cartItem.setPrice(newFoodSize.getPrice());
+        cartItem.setDiscountPercentage(newFoodSize.getDiscountPercentage());
+
+        return cartItemRepository.save(cartItem);
+    }
 }
 

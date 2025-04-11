@@ -14,4 +14,7 @@ public interface CartItemService {
      * @return the persisted CartItem
      */
     CartItem createCartItem(Long cartId, Long foodSizeId, Integer quantity);
+
+    void deleteCartItem(Long cartId, Long cartItemId);
+    CartItem updateCartItem(Long cartId, Long cartItemId, Integer newQuantity, String newSize);
 }
