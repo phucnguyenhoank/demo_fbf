@@ -18,17 +18,17 @@ public class FbfUserServiceImpl implements FbfUserService {
     private final CartRepository cartRepository;
     private final FbfUserMapper fbfUserMapper;
 
-    @Override
-    public FbfUserDto registerUser(FbfUserDto userDto) {
-        // You can add username/email existence check here if needed
+//    @Override
+//    public FbfUserDto registerUser(FbfUserDto userDto) {
+//        // You can add username/email existence check here if needed
+//
+//        FbfUser fbfUser = fbfUserMapper.toEntity(userDto);
+//        FbfUser savedfbfUser = fbfUserRepository.save(fbfUser);
+//        return fbfUserMapper.toDto(savedfbfUser);
+//    }
 
-        FbfUser fbfUser = fbfUserMapper.toEntity(userDto);
-        FbfUser savedfbfUser = fbfUserRepository.save(fbfUser);
-        return fbfUserMapper.toDto(savedfbfUser);
-    }
-
     @Override
-    public FbfUser saveFbfUser(FbfUser fbfUser) {
+    public FbfUser registerFbfUser(FbfUser fbfUser) {
         if (fbfUserRepository.findByUsername(fbfUser.getUsername()).isPresent()) {
             throw new IllegalArgumentException("Username is already taken.");
         }
@@ -38,13 +38,10 @@ public class FbfUserServiceImpl implements FbfUserService {
         }
 
         FbfUser savedUser = fbfUserRepository.save(fbfUser);
-
         Cart cart = new Cart();
         cart.setUser(savedUser);
         cartRepository.save(cart);
-
         savedUser.setCart(cart);
-
         return savedUser;
     }
 

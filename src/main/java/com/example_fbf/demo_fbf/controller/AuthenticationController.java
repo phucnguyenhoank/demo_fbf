@@ -8,7 +8,7 @@ import com.example_fbf.demo_fbf.entity.Otp;
 import com.example_fbf.demo_fbf.repository.OtpRepository;
 import com.example_fbf.demo_fbf.service.EmailService;
 import com.example_fbf.demo_fbf.util.OtpGenerator;
-import com.example_fbf.demo_fbf.wrapper.ApiResponse;
+import com.example_fbf.demo_fbf.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

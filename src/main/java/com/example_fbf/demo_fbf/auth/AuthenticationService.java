@@ -7,6 +7,7 @@ import com.example_fbf.demo_fbf.entity.FbfUser;
 import com.example_fbf.demo_fbf.entity.Otp;
 import com.example_fbf.demo_fbf.repository.FbfUserRepository;
 import com.example_fbf.demo_fbf.repository.OtpRepository;
+import com.example_fbf.demo_fbf.service.CartService;
 import com.example_fbf.demo_fbf.service.FbfUserService;
 import com.example_fbf.demo_fbf.service.OtpService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -55,9 +58,11 @@ public class AuthenticationService {
                 .address(request.getAddress())
                 .fbfRole(FbfRole.FBF_USER)
                 .build();
-        fbfUserService.saveFbfUser(fbfUser);
-
-        var jwtToken = jwtService.generateToken(fbfUser);
+        // create new cart and save new user
+        fbfUserService.registerFbfUser(fbfUser);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("cartId", fbfUser.getCart().getId());
+        var jwtToken = jwtService.generateToken(claims, fbfUser);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
@@ -69,7 +74,9 @@ public class AuthenticationService {
                 request.getPassword()
         ));
         var fbfUser = fbfUserService.findByUsername(request.getUsername());
-        var jwtToken = jwtService.generateToken(fbfUser);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("cartId", fbfUser.getCart().getId());
+        var jwtToken = jwtService.generateToken(claims, fbfUser);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 

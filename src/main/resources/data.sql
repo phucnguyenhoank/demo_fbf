@@ -1,44 +1,122 @@
--- 1. Thêm người dùng
-INSERT INTO fbf_user (username, password, email, name, phoneNumber, address) VALUES
-('user1', 'password1', 'user1@example.com', 'Alice', '123456789', '123 Street A'),
-('user2', 'password2', 'user2@example.com', 'Bob', '987654321', '456 Street B');
+-- Insert Users (id provided, so foreign keys will reference these)
+INSERT INTO `fastbreakfastdb_demo`.`fbf_user`
+    (`id`, `address`, `email`, `name`, `password`, `phone_number`, `username`, `fbf_role`)
+VALUES
+    (1, '123 Main St', 'john@example.com', 'John Doe', 'password123', '1234567890', 'john_doe', 'FBF_USER'),
+    (2, '456 Park Ave', 'jane@example.com', 'Jane Smith', 'pass456', '0987654321', 'jane_smith', 'FBF_USER'),
+    (3, 'Sơn Hòa, Phú Yên', 'phucnguyeho@gmail.com', 'Nguyen Hoang Phuc', '$2a$10$SYg7j8HuNv7EoWti7p3tv.jG5FsaStAD27dE/7GhGDyQkIKruPzKm', '0376816194', 'hp', 'FBF_USER');
 
--- 2. Thêm kích thước món ăn
-INSERT INTO food_size (sizeName) VALUES
-('Small'), ('Medium'), ('Large'), ('Extra Large');
+-- Insert Categories
+INSERT INTO `fastbreakfastdb_demo`.`category`
+    (`id`, `name`)
+VALUES
+    (1, 'Bánh mì'),
+    (2, 'Phở, bún, miến'),
+    (3, 'Xôi, cháo'),
+    (4, 'Bánh ngọt & bánh bao'),
+    (5, 'Đồ uống');
 
--- 3. Thêm danh mục món ăn
-INSERT INTO category (name) VALUES
-('Beverages'), ('Fast Food'), ('Desserts');
+-- Insert Food items (each food row references a valid category_id)
+INSERT INTO `fastbreakfastdb_demo`.`food`
+    (`category_id`, `id`, `description`, `image_url`, `name`)
+VALUES
+    (1, 1, 'Bánh mì thịt nướng ngon tuyệt', 'https://example.com/banhmi.jpg', 'Bánh mì thịt nướng'),
+    (2, 2, 'Phở bò tái chín đậm đà', 'https://example.com/pho_bo.jpg', 'Phở bò tái'),
+    (2, 3, 'Bún chả truyền thống Hà Nội', 'https://example.com/bun_cha.jpg', 'Bún chả'),
+    (3, 4, 'Xôi gà thơm ngon', 'https://example.com/xoi_ga.jpg', 'Xôi gà'),
+    (4, 5, 'Bánh bao chả hấp dẫn', 'https://example.com/banh_bao.jpg', 'Bánh bao chả'),
+    (5, 6, 'Trà đào mát lạnh, thơm ngon', 'https://example.com/tra_dao.jpg', 'Trà đào');
 
--- 4. Thêm món ăn
-INSERT INTO food (name, price, description, imageUrl, food_size_id, category_id) VALUES
-('Burger', 5.99, 'Delicious beef burger', 'burger.jpg', 3, 2),
-('Pizza', 9.99, 'Cheesy pepperoni pizza', 'pizza.jpg', 4, 2),
-('Coca Cola', 1.99, 'Refreshing cola drink', 'cola.jpg', 2, 1);
+-- Insert Food Sizes (each row references an existing food_id)
+-- Food 1: Bánh mì thịt nướng
+INSERT INTO `fastbreakfastdb_demo`.`food_size`
+    (`discount_percentage`, `price`, `food_id`, `id`, `size`)
+VALUES
+    (0,    2.99, 1,  1, 'S'),
+    (5.0,  3.99, 1,  2, 'M'),
+    (7.5,  4.99, 1,  3, 'L'),
+    (10.0, 5.99, 1,  4, 'XL');
 
--- 5. Thêm giỏ hàng cho người dùng
-INSERT INTO cart (fbf_user_id) VALUES
-(1), (2);
+-- Food 2: Phở bò tái
+INSERT INTO `fastbreakfastdb_demo`.`food_size`
+    (`discount_percentage`, `price`, `food_id`, `id`, `size`)
+VALUES
+    (0,    5.99, 2,  5, 'S'),
+    (5.0,  6.99, 2,  6, 'M'),
+    (7.5,  7.99, 2,  7, 'L'),
+    (10.0, 8.99, 2,  8, 'XL');
 
--- 6. Thêm mục giỏ hàng
-INSERT INTO cart_item (price, quantity, food_id, cart_id) VALUES
-(5.99, 2, 1, 1),  -- 2 Burgers in User 1's cart
-(9.99, 1, 2, 2),  -- 1 Pizza in User 2's cart
-(1.99, 3, 3, 1);  -- 3 Coca Colas in User 1's cart
+-- Food 3: Bún chả
+INSERT INTO `fastbreakfastdb_demo`.`food_size`
+    (`discount_percentage`, `price`, `food_id`, `id`, `size`)
+VALUES
+    (0,    4.99, 3,  9,  'S'),
+    (5.0,  5.99, 3,  10, 'M'),
+    (7.5,  6.99, 3,  11, 'L'),
+    (10.0, 7.99, 3,  12, 'XL');
 
--- 7. Thêm đơn hàng
-INSERT INTO fbf_order (totalPrice, phoneNumber, address, createdAt, status, fbf_user_id) VALUES
-(21.96, '123456789', '123 Street A', NOW(), 'CREATED', 1),
-(9.99, '987654321', '456 Street B', NOW(), 'PAID', 2);
+-- Food 4: Xôi gà
+INSERT INTO `fastbreakfastdb_demo`.`food_size`
+    (`discount_percentage`, `price`, `food_id`, `id`, `size`)
+VALUES
+    (0,    3.49, 4,  13, 'S'),
+    (5.0,  4.49, 4,  14, 'M'),
+    (7.0,  5.49, 4,  15, 'L'),
+    (10.0, 6.49, 4,  16, 'XL');
 
--- 8. Thêm mục đơn hàng từ giỏ hàng
-INSERT INTO order_item (price, quantity, fbf_order_id, cart_item_id) VALUES
-(5.99, 2, 1, 1),
-(1.99, 3, 1, 3),
-(9.99, 1, 2, 2);
+-- Food 5: Bánh bao chả
+INSERT INTO `fastbreakfastdb_demo`.`food_size`
+    (`discount_percentage`, `price`, `food_id`, `id`, `size`)
+VALUES
+    (0,    2.49, 5,  17, 'S'),
+    (5.0,  3.49, 5,  18, 'M'),
+    (7.5,  4.49, 5,  19, 'L'),
+    (10.0, 5.49, 5,  20, 'XL');
 
--- 9. Thêm mã giảm giá
-INSERT INTO discount_code (code, discountPercentage, expirationDate, expired, order_item_id, fbf_order_id) VALUES
-('DISC10', 10.00, '2025-12-31', FALSE, 1, 1),
-('DISC20', 20.00, '2025-06-30', FALSE, 2, 2);
+-- Food 6: Trà đào
+INSERT INTO `fastbreakfastdb_demo`.`food_size`
+    (`discount_percentage`, `price`, `food_id`, `id`, `size`)
+VALUES
+    (0,    1.99, 6,  21, 'S'),
+    (5.0,  2.49, 6,  22, 'M'),
+    (7.5,  2.99, 6,  23, 'L'),
+    (10.0, 3.49, 6,  24, 'XL');
+
+-- Insert Carts for Users (each row references a valid fbf_user_id)
+INSERT INTO `fastbreakfastdb_demo`.`cart`
+    (`fbf_user_id`, `id`)
+VALUES
+    (1, 1),
+    (2, 2),
+    (3, 3);
+
+-- Insert Cart Items (each row references an existing cart_id and food_size_id)
+INSERT INTO `fastbreakfastdb_demo`.`cart_item`
+    (`discount_percentage`, `price`, `quantity`, `cart_id`, `food_size_id`, `id`)
+VALUES
+    (10.0, 9.99, 1, 1, 1, 1),
+    (10.0, 9.99, 1, 2, 1, 2),
+    (10.0, 9.99, 1, 3, 1, 3);
+
+-- Insert Discount Codes
+INSERT INTO `fastbreakfastdb_demo`.`discount_code`
+    (`discount_percentage`, `expiration_date`, `id`, `code`)
+VALUES
+    (10.0, DATE_ADD(NOW(), INTERVAL 30 DAY), 1, 'DISCOUNT10'),
+    (15.0, DATE_ADD(NOW(), INTERVAL 60 DAY), 2, 'SAVE15');
+
+-- Insert Orders (each order must reference an existing fbf_user and discount_code)
+INSERT INTO `fastbreakfastdb_demo`.`fbf_order`
+    (`total_price`, `created_at`, `discount_code_id`, `fbf_user_id`, `id`, `address`, `phone_number`)
+VALUES
+    (25.98, NOW(), 1, 1, 1, '123 Main St', '1234567890'),
+    (25.98, NOW(), 1, 2, 2, '456 Park Ave', '0987654321'),
+    (25.98, NOW(), 1, 3, 3, 'Sơn Hòa, Phú Yên', '0376816194');
+
+-- Insert Order Items (each order_item references an existing order and food_size)
+INSERT INTO `fastbreakfastdb_demo`.`order_item`
+    (`discount_percentage`, `price`, `quantity`, `fbf_order_id`, `food_size_id`, `id`)
+VALUES
+    (15.0, 12.99, 2, 1, 2, 1),
+    (15.0, 12.99, 2, 2, 2, 2),
+    (15.0, 12.99, 2, 3, 2, 3);

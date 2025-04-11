@@ -1,6 +1,6 @@
 package com.example_fbf.demo_fbf.controller;
 
-import com.example_fbf.demo_fbf.wrapper.ApiResponse;
+import com.example_fbf.demo_fbf.dto.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -17,7 +17,7 @@ public class FoodSize {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String size; // e.g., "S", "M", "L", "XL"
+    private String size; // "S", "M", "L", "XL"
     private Double price;
     private Double discountPercentage; // e.g., 10.0 for 10%, null if no discount
 

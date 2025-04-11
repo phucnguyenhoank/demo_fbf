@@ -1,6 +1,6 @@
 package com.example_fbf.demo_fbf.handler;
 
-import com.example_fbf.demo_fbf.wrapper.ApiResponse;
+import com.example_fbf.demo_fbf.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
