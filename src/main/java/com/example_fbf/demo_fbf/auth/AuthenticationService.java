@@ -7,6 +7,8 @@ import com.example_fbf.demo_fbf.entity.FbfUser;
 import com.example_fbf.demo_fbf.entity.Otp;
 import com.example_fbf.demo_fbf.repository.FbfUserRepository;
 import com.example_fbf.demo_fbf.repository.OtpRepository;
+import com.example_fbf.demo_fbf.service.FbfUserService;
+import com.example_fbf.demo_fbf.service.OtpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,20 +24,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final FbfUserRepository fbfUserRepository;
+    private final FbfUserService fbfUserService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final OtpRepository otpRepository;
+    private final OtpService otpService;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        Optional<Otp> storedOtp = otpRepository.findTopByEmailOrderByExpirationTimeDesc(request.getEmail());
-
-        if (storedOtp.isEmpty()) {
-            throw new IllegalArgumentException("OTP not found");
-        }
-
-        Otp otpRecord = storedOtp.get();
+        Otp otpRecord = otpService.getLatestOtpByEmail(request.getEmail());
 
         // Validate OTP expiration time
         if (otpRecord.getExpirationTime().isBefore(LocalDateTime.now())) {
@@ -47,7 +43,7 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Invalid OTP");
         }
 
-        otpRepository.delete(otpRecord);
+        otpService.deleteOtp(otpRecord);
 
         // Proceed with user registration
         var fbfUser = FbfUser.builder()
@@ -59,7 +55,7 @@ public class AuthenticationService {
                 .address(request.getAddress())
                 .fbfRole(FbfRole.FBF_USER)
                 .build();
-        fbfUserRepository.save(fbfUser);
+        fbfUserService.saveFbfUser(fbfUser);
 
         var jwtToken = jwtService.generateToken(fbfUser);
         return AuthenticationResponse.builder()
@@ -72,7 +68,7 @@ public class AuthenticationService {
                 request.getUsername(),
                 request.getPassword()
         ));
-        var fbfUser = fbfUserRepository.findByUsername(request.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
+        var fbfUser = fbfUserService.findByUsername(request.getUsername());
         var jwtToken = jwtService.generateToken(fbfUser);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
