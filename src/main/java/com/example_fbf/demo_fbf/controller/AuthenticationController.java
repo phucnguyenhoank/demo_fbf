@@ -43,7 +43,8 @@ public class AuthenticationController {
         otpRepository.save(otpRecord);
 
         // Gửi OTP tới email của người dùng
-        emailService.sendOtp(email, otp);
+//        emailService.sendOtp(email, otp);
+        emailService.sendOtpAsync(email, otp);
 
         // Tạo phản hồi JSON
         ApiResponse<String> response = new ApiResponse<>(

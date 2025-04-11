@@ -1,0 +1,8 @@
+public:
+send-otp để gửi otp tới email
+register tài khoản với các thông tin liên quan của user và otp và trả về token
+authenticate (đăng nhập) với username và password nhận token
+gọi các private request với token
+
+
+
