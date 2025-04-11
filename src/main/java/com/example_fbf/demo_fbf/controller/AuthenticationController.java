@@ -36,22 +36,12 @@ public class AuthenticationController {
     @PostMapping("/send-otp")
     public ResponseEntity<ApiResponse<String>> sendOtp(@RequestParam String email) {
         String otp = OtpGenerator.generateOtp();
-        LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(5); // Thời gian hết hạn OTP
+        LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(5);
 
-        // Lưu OTP vào cơ sở dữ liệu
         Otp otpRecord = new Otp(email, otp, expirationTime);
         otpRepository.save(otpRecord);
-
-        // Gửi OTP tới email của người dùng
-//        emailService.sendOtp(email, otp);
         emailService.sendOtpAsync(email, otp);
-
-        // Tạo phản hồi JSON
-        ApiResponse<String> response = new ApiResponse<>(
-                true,
-                "OTP sent to email.",
-                "No addition"
-        );
+        ApiResponse<String> response = new ApiResponse<>(true, "OTP sent to email.", "No addition");
 
         return ResponseEntity.ok(response);
     }
