@@ -13,11 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 public class FbfOrderDto {
     private Long id;
-    private Double totalPrice;
+    private Double discountedTotalPrice;
     private String phoneNumber;
     private String address;
     private LocalDateTime createdAt;
-    private Long userId;
+    private Long fbfUserId;
     private DiscountCodeDto discountCode;
     private List<OrderItemDto> items;
 }

@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 public class OrderItemDto {
     private Long id;
     private FoodSizeDto foodSize;
-    private Double price;
+    private Double discountedPrice;
     private Double discountPercentage;
     private Integer quantity;
+    private Long fbfOrderId;
 }

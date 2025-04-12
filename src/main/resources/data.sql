@@ -99,7 +99,9 @@ INSERT INTO `fastbreakfastdb_demo`.`cart_item`
 VALUES
     (10.0, 9.99, 1, 1, 1, 1),
     (10.0, 9.99, 1, 2, 1, 2),
-    (10.0, 9.99, 1, 3, 1, 3);
+    (10.0, 9.99, 1, 3, 1, 3),
+    (10.0, 9.99, 2, 3, 1, 4),
+    (10.0, 9.99, 2, 3, 2, 5);
 
 -- Insert Discount Codes
 INSERT INTO `fastbreakfastdb_demo`.`discount_code`

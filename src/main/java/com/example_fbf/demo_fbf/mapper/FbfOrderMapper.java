@@ -7,10 +7,11 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {OrderItemMapper.class, DiscountCodeMapper.class})
 public interface FbfOrderMapper {
-    @Mapping(source = "user.id", target = "userId")
+
+    @Mapping(source = "fbfUser.id", target = "fbfUserId")
     FbfOrderDto toDto(FbfOrder fbfOrder);
 
-    @Mapping(target = "user", ignore = true)
-    @Mapping(target = "discountCode", ignore = true)
+    @Mapping(target = "fbfUser", ignore = true) // Let the service set it using userId
     FbfOrder toEntity(FbfOrderDto fbfOrderDto);
 }
+

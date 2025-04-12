@@ -20,12 +20,11 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "food_size_id")
     private FoodSize foodSize;
-
     private Double discountedPrice;
     private Double discountPercentage; // Copied from CartItem
     private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "fbf_order_id")
-    private FbfOrder order;
+    private FbfOrder fbfOrder;
 }

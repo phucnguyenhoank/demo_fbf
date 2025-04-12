@@ -20,7 +20,6 @@ public class CartItem {
     @ManyToOne
     @JoinColumn(name = "food_size_id")
     private FoodSize foodSize;
-
     private Double price; // Price at the time of adding
     private Double discountPercentage; // Discount at the time of adding, null if none
     private Integer quantity;

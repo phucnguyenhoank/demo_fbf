@@ -34,7 +34,7 @@ public class FbfUser implements UserDetails {
     @OneToOne(mappedBy = "user")
     private Cart cart;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "fbfUser")
     private List<FbfOrder> orders;
 
     @Override

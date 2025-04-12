@@ -14,4 +14,5 @@ public class CartItemDto {
     private Double price;
     private Double discountPercentage;
     private Integer quantity;
+    private Long cartId;
 }

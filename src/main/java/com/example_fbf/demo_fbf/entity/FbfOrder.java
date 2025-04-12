@@ -19,7 +19,6 @@ public class FbfOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Double discountedTotalPrice;
     private String phoneNumber;
     private String address;
@@ -33,7 +32,7 @@ public class FbfOrder {
     @JoinColumn(name = "discount_code_id")
     private DiscountCode discountCode;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "fbfOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items;
 }
 
