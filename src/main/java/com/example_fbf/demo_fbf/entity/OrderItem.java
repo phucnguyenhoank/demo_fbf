@@ -21,7 +21,7 @@ public class OrderItem {
     @JoinColumn(name = "food_size_id")
     private FoodSize foodSize;
 
-    private Double price;
+    private Double discountedPrice;
     private Double discountPercentage; // Copied from CartItem
     private Integer quantity;
 
@@ -29,4 +29,3 @@ public class OrderItem {
     @JoinColumn(name = "fbf_order_id")
     private FbfOrder order;
 }
-

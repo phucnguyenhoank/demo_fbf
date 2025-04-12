@@ -28,6 +28,10 @@ public class CartItemServiceImpl implements CartItemService {
         FoodSize foodSize = foodSizeRepository.findById(foodSizeId)
                 .orElseThrow(() -> new IllegalArgumentException("FoodSize not found for id: " + foodSizeId));
 
+        if (foodSize.getStock() < quantity) {
+            throw new IllegalArgumentException("Not enough stock for size " + foodSize.getSize());
+        }
+
         // Create new CartItem setting the current price and discount percentage from FoodSize
         CartItem cartItem = new CartItem();
         cartItem.setCart(cart);
@@ -70,13 +74,16 @@ public class CartItemServiceImpl implements CartItemService {
             throw new IllegalArgumentException("CartItem does not belong to this cart");
         }
 
-        // Update quantity
-        cartItem.setQuantity(newQuantity);
-
         // Find new FoodSize based on the existing food and the provided size code
         Long foodId = cartItem.getFoodSize().getFood().getId();
         FoodSize newFoodSize = foodSizeRepository.findByFoodIdAndSize(foodId, newSize)
                 .orElseThrow(() -> new IllegalArgumentException("FoodSize not found for food id " + foodId + " and size " + newSize));
+        if (newFoodSize.getStock() < newQuantity) {
+            throw new IllegalArgumentException("Not enough stock for size " + newFoodSize.getSize());
+        }
+
+        // Update quantity
+        cartItem.setQuantity(newQuantity);
 
         // Update foodSize and capture the price and discount at the time of change
         cartItem.setFoodSize(newFoodSize);

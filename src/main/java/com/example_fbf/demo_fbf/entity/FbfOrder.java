@@ -20,14 +20,14 @@ public class FbfOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double totalPrice;
+    private Double discountedTotalPrice;
     private String phoneNumber;
     private String address;
     private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "fbf_user_id")
-    private FbfUser user;
+    private FbfUser fbfUser;
 
     @ManyToOne
     @JoinColumn(name = "discount_code_id")

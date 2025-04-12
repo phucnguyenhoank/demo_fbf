@@ -1,3 +1,7 @@
+/*
+WARNING
+DỮ LIỆU CÓ THỂ KHÔNG CHÈN ĐƯỢC DO XUNG ĐỘT KHÓA HOẶC GIÁ TRỊ
+*/
 -- Insert Users (id provided, so foreign keys will reference these)
 INSERT INTO `fastbreakfastdb_demo`.`fbf_user`
     (`id`, `address`, `email`, `name`, `password`, `phone_number`, `username`, `fbf_role`)
@@ -27,60 +31,59 @@ VALUES
     (4, 5, 'Bánh bao chả hấp dẫn', 'https://example.com/banh_bao.jpg', 'Bánh bao chả'),
     (5, 6, 'Trà đào mát lạnh, thơm ngon', 'https://example.com/tra_dao.jpg', 'Trà đào');
 
--- Insert Food Sizes (each row references an existing food_id)
 -- Food 1: Bánh mì thịt nướng
 INSERT INTO `fastbreakfastdb_demo`.`food_size`
-    (`discount_percentage`, `price`, `food_id`, `id`, `size`)
+    (`discount_percentage`, `price`, `stock`, `food_id`, `id`, `size`)
 VALUES
-    (0,    2.99, 1,  1, 'S'),
-    (5.0,  3.99, 1,  2, 'M'),
-    (7.5,  4.99, 1,  3, 'L'),
-    (10.0, 5.99, 1,  4, 'XL');
+    (0,    2.99, 50, 1,  1, 'S'),
+    (5.0,  3.99, 40, 1,  2, 'M'),
+    (7.5,  4.99, 30, 1,  3, 'L'),
+    (10.0, 5.99, 20, 1,  4, 'XL');
 
 -- Food 2: Phở bò tái
 INSERT INTO `fastbreakfastdb_demo`.`food_size`
-    (`discount_percentage`, `price`, `food_id`, `id`, `size`)
+    (`discount_percentage`, `price`, `stock`, `food_id`, `id`, `size`)
 VALUES
-    (0,    5.99, 2,  5, 'S'),
-    (5.0,  6.99, 2,  6, 'M'),
-    (7.5,  7.99, 2,  7, 'L'),
-    (10.0, 8.99, 2,  8, 'XL');
+    (0,    5.99, 50, 2,  5, 'S'),
+    (5.0,  6.99, 40, 2,  6, 'M'),
+    (7.5,  7.99, 30, 2,  7, 'L'),
+    (10.0, 8.99, 20, 2,  8, 'XL');
 
 -- Food 3: Bún chả
 INSERT INTO `fastbreakfastdb_demo`.`food_size`
-    (`discount_percentage`, `price`, `food_id`, `id`, `size`)
+    (`discount_percentage`, `price`, `stock`, `food_id`, `id`, `size`)
 VALUES
-    (0,    4.99, 3,  9,  'S'),
-    (5.0,  5.99, 3,  10, 'M'),
-    (7.5,  6.99, 3,  11, 'L'),
-    (10.0, 7.99, 3,  12, 'XL');
+    (0,    4.99, 50, 3,  9,  'S'),
+    (5.0,  5.99, 40, 3,  10, 'M'),
+    (7.5,  6.99, 30, 3,  11, 'L'),
+    (10.0, 7.99, 20, 3,  12, 'XL');
 
 -- Food 4: Xôi gà
 INSERT INTO `fastbreakfastdb_demo`.`food_size`
-    (`discount_percentage`, `price`, `food_id`, `id`, `size`)
+    (`discount_percentage`, `price`, `stock`, `food_id`, `id`, `size`)
 VALUES
-    (0,    3.49, 4,  13, 'S'),
-    (5.0,  4.49, 4,  14, 'M'),
-    (7.0,  5.49, 4,  15, 'L'),
-    (10.0, 6.49, 4,  16, 'XL');
+    (0,    3.49, 50, 4,  13, 'S'),
+    (5.0,  4.49, 40, 4,  14, 'M'),
+    (7.0,  5.49, 30, 4,  15, 'L'),
+    (10.0, 6.49, 20, 4,  16, 'XL');
 
 -- Food 5: Bánh bao chả
 INSERT INTO `fastbreakfastdb_demo`.`food_size`
-    (`discount_percentage`, `price`, `food_id`, `id`, `size`)
+    (`discount_percentage`, `price`, `stock`, `food_id`, `id`, `size`)
 VALUES
-    (0,    2.49, 5,  17, 'S'),
-    (5.0,  3.49, 5,  18, 'M'),
-    (7.5,  4.49, 5,  19, 'L'),
-    (10.0, 5.49, 5,  20, 'XL');
+    (0,    2.49, 50, 5,  17, 'S'),
+    (5.0,  3.49, 40, 5,  18, 'M'),
+    (7.5,  4.49, 30, 5,  19, 'L'),
+    (10.0, 5.49, 20, 5,  20, 'XL');
 
 -- Food 6: Trà đào
 INSERT INTO `fastbreakfastdb_demo`.`food_size`
-    (`discount_percentage`, `price`, `food_id`, `id`, `size`)
+    (`discount_percentage`, `price`, `stock`, `food_id`, `id`, `size`)
 VALUES
-    (0,    1.99, 6,  21, 'S'),
-    (5.0,  2.49, 6,  22, 'M'),
-    (7.5,  2.99, 6,  23, 'L'),
-    (10.0, 3.49, 6,  24, 'XL');
+    (0,    1.99, 50, 6,  21, 'S'),
+    (5.0,  2.49, 40, 6,  22, 'M'),
+    (7.5,  2.99, 30, 6,  23, 'L'),
+    (10.0, 3.49, 20, 6,  24, 'XL');
 
 -- Insert Carts for Users (each row references a valid fbf_user_id)
 INSERT INTO `fastbreakfastdb_demo`.`cart`
@@ -107,7 +110,7 @@ VALUES
 
 -- Insert Orders (each order must reference an existing fbf_user and discount_code)
 INSERT INTO `fastbreakfastdb_demo`.`fbf_order`
-    (`total_price`, `created_at`, `discount_code_id`, `fbf_user_id`, `id`, `address`, `phone_number`)
+    (`discounted_total_price`, `created_at`, `discount_code_id`, `fbf_user_id`, `id`, `address`, `phone_number`)
 VALUES
     (25.98, NOW(), 1, 1, 1, '123 Main St', '1234567890'),
     (25.98, NOW(), 1, 2, 2, '456 Park Ave', '0987654321'),
@@ -115,8 +118,9 @@ VALUES
 
 -- Insert Order Items (each order_item references an existing order and food_size)
 INSERT INTO `fastbreakfastdb_demo`.`order_item`
-    (`discount_percentage`, `price`, `quantity`, `fbf_order_id`, `food_size_id`, `id`)
+    (`discount_percentage`, `discounted_price`, `quantity`, `fbf_order_id`, `food_size_id`, `id`)
 VALUES
     (15.0, 12.99, 2, 1, 2, 1),
     (15.0, 12.99, 2, 2, 2, 2),
     (15.0, 12.99, 2, 3, 2, 3);
+
