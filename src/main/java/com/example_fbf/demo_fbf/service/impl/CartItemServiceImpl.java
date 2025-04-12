@@ -10,6 +10,8 @@ import com.example_fbf.demo_fbf.service.CartItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CartItemServiceImpl implements CartItemService {
@@ -28,19 +30,38 @@ public class CartItemServiceImpl implements CartItemService {
         FoodSize foodSize = foodSizeRepository.findById(foodSizeId)
                 .orElseThrow(() -> new IllegalArgumentException("FoodSize not found for id: " + foodSizeId));
 
-        if (foodSize.getStock() < quantity) {
-            throw new IllegalArgumentException("Not enough stock for size " + foodSize.getSize());
+        // Look for an existing CartItem in the cart for the given FoodSize
+        Optional<CartItem> existingCartItemOptional = cart.getItems().stream()
+                .filter(item -> item.getFoodSize().getId().equals(foodSizeId))
+                .findFirst();
+
+        CartItem cartItem;
+        if (existingCartItemOptional.isPresent()) {
+            // Update existing CartItem
+            cartItem = existingCartItemOptional.get();
+            int newTotalQuantity = cartItem.getQuantity() + quantity;
+            // Check if new total quantity exceeds available stock
+            if (foodSize.getStock() < newTotalQuantity) {
+                throw new IllegalArgumentException("Not enough stock for size " + foodSize.getSize() +
+                        ". Available: " + foodSize.getStock() + ", Requested: " + newTotalQuantity);
+            }
+            cartItem.setQuantity(newTotalQuantity);
+        } else {
+            // Check if available stock is enough for new CartItem
+            if (foodSize.getStock() < quantity) {
+                throw new IllegalArgumentException("Not enough stock for size " + foodSize.getSize() +
+                        ". Available: " + foodSize.getStock() + ", Requested: " + quantity);
+            }
+            // Create new CartItem
+            cartItem = new CartItem();
+            cartItem.setCart(cart);
+            cartItem.setFoodSize(foodSize);
+            cartItem.setQuantity(quantity);
+            cartItem.setPrice(foodSize.getPrice());
+            cartItem.setDiscountPercentage(foodSize.getDiscountPercentage());
         }
 
-        // Create new CartItem setting the current price and discount percentage from FoodSize
-        CartItem cartItem = new CartItem();
-        cartItem.setCart(cart);
-        cartItem.setFoodSize(foodSize);
-        cartItem.setQuantity(quantity);
-        cartItem.setPrice(foodSize.getPrice());
-        cartItem.setDiscountPercentage(foodSize.getDiscountPercentage());
-
-        // Save and return the new cart item
+        // Save and return the updated or new CartItem
         return cartItemRepository.save(cartItem);
     }
 
