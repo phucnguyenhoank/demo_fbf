@@ -1,5 +1,6 @@
 package com.example_fbf.demo_fbf.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class FoodSize {
 
     @ManyToOne
     @JoinColumn(name = "food_id")
+    @JsonBackReference
     private Food food;
 }
 

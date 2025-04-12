@@ -11,4 +11,8 @@ import java.util.Optional;
 @Service
 public interface FoodService {
     Page<FoodDto> findByContainName(PageRequest pageRequest, String namePattern);
+    public Optional<Food> findFoodById(Long id);
+    public Page<FoodDto> findFoodByCategoryId(PageRequest pageRequest, Long id);
+    public Page<FoodDto> findAllFood(PageRequest pageRequest);
+    public Page<FoodDto> findFoodByPriceBetween(Pageable pageable, Double min, Double max);
 }
