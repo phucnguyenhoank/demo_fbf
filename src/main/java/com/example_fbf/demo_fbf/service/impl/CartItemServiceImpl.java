@@ -21,6 +21,7 @@ public class CartItemServiceImpl implements CartItemService {
     @Autowired
     private CartItemMapper cartItemMapper ;
 
+    @Override
     public List<CartItemDto> findCartItemByCartId(Long cartId){
         List<CartItem> cartItemList = cartItemRepository.findByCartId(cartId);
         List<CartItemDto> cartItemDtos = new ArrayList<>();
@@ -32,5 +33,10 @@ public class CartItemServiceImpl implements CartItemService {
             }
         }
         return cartItemDtos;
+    }
+
+    @Override
+    public Optional<CartItemDto> findCartItemByCartIdAndFoodSizeId(Long cartId, Long foodSizeId) {
+        return Optional.ofNullable(cartItemMapper.toDto(cartItemRepository.findByCartIdAndFoodSizeId(cartId, foodSizeId).get()));
     }
 }

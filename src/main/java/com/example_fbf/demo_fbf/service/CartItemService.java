@@ -10,4 +10,5 @@ import java.util.Optional;
 @Service
 public interface CartItemService {
     public List<CartItemDto> findCartItemByCartId(Long id);
+    public Optional<CartItemDto> findCartItemByCartIdAndFoodSizeId(Long cartId, Long foodSizeId);
 }
