@@ -14,7 +14,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Long getCartIdByUserId(Long userId) {
-        return cartRepository.findByUserId(userId)
+        return cartRepository.findByFbfUserId(userId)
                 .map(Cart::getId)
                 .orElseThrow(() -> new IllegalArgumentException("Cart not found for user ID: " + userId));
     }

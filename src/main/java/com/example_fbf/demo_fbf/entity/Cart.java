@@ -19,7 +19,7 @@ public class Cart {
 
     @OneToOne
     @JoinColumn(name = "fbf_user_id")
-    private FbfUser user;
+    private FbfUser fbfUser;
 
     @OneToMany(mappedBy = "cart")
     private List<CartItem> items;

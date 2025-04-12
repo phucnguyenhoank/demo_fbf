@@ -24,6 +24,7 @@ public class FbfOrderServiceImpl implements FbfOrderService {
     private final FbfUserRepository fbfUserRepository;
     private final CartItemRepository cartItemRepository;
     private final FoodSizeRepository foodSizeRepository;
+    private final CartRepository cartRepository;
 
     @Override
     public FbfOrder createOrder(Long fbfUserId, String phoneNumber, String address, List<Long> selectedCartItemIds) {
@@ -108,6 +109,49 @@ public class FbfOrderServiceImpl implements FbfOrderService {
         cartItemRepository.deleteAll(selectedCartItems);
         savedOrder.setItems(orderItems); // optional: to reflect changes in response or service
         return savedOrder;
+    }
+
+    @Override
+    public void undoOrder(Long orderId) {
+        // Retrieve the order to be canceled.
+        FbfOrder order = fbfOrderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with id: " + orderId));
+
+        // For each OrderItem, reverse the stock reduction and re-create a corresponding CartItem.
+        for (OrderItem orderItem : order.getItems()) {
+            FoodSize foodSize = orderItem.getFoodSize();
+            int quantity = orderItem.getQuantity();
+
+            // Reverse stock reduction by adding back the quantity.
+            foodSize.setStock(foodSize.getStock() + quantity);
+            foodSizeRepository.save(foodSize);
+
+            // Re-create a CartItem from the OrderItem.
+            // (This step is optional and depends on your business process.
+            // If you simply want to cancel the order without restoring the cart,
+            // you can skip this portion.)
+            FbfUser user = order.getFbfUser();
+            Cart cart = user.getCart();
+            if (cart == null) {
+                // Optionally create a cart if not exists.
+                cart = new Cart();
+                cart.setFbfUser(user);
+                cart = cartRepository.save(cart);
+            }
+
+            CartItem cartItem = new CartItem();
+            cartItem.setCart(cart);
+            cartItem.setFoodSize(foodSize);
+            cartItem.setQuantity(quantity);
+            // Optionally, set the price and discount values.
+            cartItem.setPrice(foodSize.getPrice());
+            cartItem.setDiscountPercentage(orderItem.getDiscountPercentage());
+
+            cartItemRepository.save(cartItem);
+        }
+
+        // Delete the order.
+        fbfOrderRepository.delete(order);
     }
 }
 

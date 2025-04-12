@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class CartDto {
     private Long id;
-    private Long userId;
+    private Long fbfUserId;
     private List<CartItemDto> items;
 }

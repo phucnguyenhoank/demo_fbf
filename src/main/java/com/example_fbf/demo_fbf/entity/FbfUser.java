@@ -31,7 +31,7 @@ public class FbfUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private FbfRole fbfRole;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "fbfUser")
     private Cart cart;
 
     @OneToMany(mappedBy = "fbfUser")

@@ -7,11 +7,9 @@ import com.example_fbf.demo_fbf.entity.FbfOrder;
 import com.example_fbf.demo_fbf.mapper.FbfOrderMapper;
 import com.example_fbf.demo_fbf.service.FbfOrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/fbf-orders")
@@ -31,6 +29,12 @@ public class FbfOrderController {
         );
         FbfOrderDto fbfOrderDto = fbfOrderMapper.toDto(order);
         return ResponseEntity.ok(new ApiResponse<>(true, "Successfully created FbfOrder", fbfOrderDto));
+    }
+
+    @DeleteMapping("/{orderId}/undo")
+    public ResponseEntity<ApiResponse<String>> undoOrder(@PathVariable Long orderId) {
+        fbfOrderService.undoOrder(orderId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Order undone successfully", null));
     }
 }
 

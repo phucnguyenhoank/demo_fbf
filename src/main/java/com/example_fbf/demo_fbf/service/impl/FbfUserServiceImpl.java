@@ -39,7 +39,7 @@ public class FbfUserServiceImpl implements FbfUserService {
 
         FbfUser savedUser = fbfUserRepository.save(fbfUser);
         Cart cart = new Cart();
-        cart.setUser(savedUser);
+        cart.setFbfUser(savedUser);
         cartRepository.save(cart);
         savedUser.setCart(cart);
         return savedUser;
