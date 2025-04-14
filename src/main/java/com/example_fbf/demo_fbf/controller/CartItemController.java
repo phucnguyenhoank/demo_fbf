@@ -53,5 +53,22 @@ public class CartItemController {
         CartItemDto cartItemDto = cartItemMapper.toDto(updatedCartItem);
         return ResponseEntity.ok(new ApiResponse<>(true, "Updated CartItem", cartItemDto));
     }
+
+    @GetMapping("/search/by-cart-id")
+    public List<CartItemDto> findCartItemByCartId(@RequestParam(defaultValue = "0") Long id){
+        List<CartItemDto> cartItemList = cartItemService.findCartItemByCartId(id);
+        return cartItemList;
+    }
+
+    @GetMapping("/search/by-cart-foodsize")
+    public ResponseEntity<CartItemDto> getCartItemBYCartIdAndSize(
+            @RequestParam Long cartId,
+            @RequestParam Long foodSizeid
+    )
+    {
+        Optional<CartItemDto> cartItemDto = cartItemService.findCartItemByCartIdAndFoodSizeId(cartId, foodSizeid);
+        return cartItemDto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }
 

@@ -11,6 +11,17 @@ import org.springframework.stereotype.Service;
 public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
+    private final CartMapper cartMapper;
+
+    @Override
+    public boolean AddCartItem(CartItem cartItem) {
+        return false;
+    }
+
+    @Override
+    public Optional<CartDto> findCartById(Long id) {
+        return Optional.ofNullable(cartMapper.toDto(cartRepository.findById(id).get()));
+    }
 
     @Override
     public Long getCartIdByUserId(Long userId) {

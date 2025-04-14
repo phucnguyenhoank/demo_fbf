@@ -9,7 +9,8 @@ import com.example_fbf.demo_fbf.repository.FoodSizeRepository;
 import com.example_fbf.demo_fbf.service.CartItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import com.example_fbf.demo_fbf.mapper.CartItemMapper;
+import com.example_fbf.demo_fbf.dto.CartItemDto;
 import java.util.Optional;
 
 @Service
@@ -19,6 +20,7 @@ public class CartItemServiceImpl implements CartItemService {
     private final CartRepository cartRepository;
     private final FoodSizeRepository foodSizeRepository;
     private final CartItemRepository cartItemRepository;
+    private final CartItemMapper cartItemMapper;
 
     @Override
     public CartItem createCartItem(Long cartId, Long foodSizeId, Integer quantity) {
@@ -113,5 +115,26 @@ public class CartItemServiceImpl implements CartItemService {
 
         return cartItemRepository.save(cartItem);
     }
+
+    @Override
+    public List<CartItemDto> findCartItemByCartId(Long cartId){
+        List<CartItem> cartItemList = cartItemRepository.findByCartId(cartId);
+        List<CartItemDto> cartItemDtos = new ArrayList<>();
+        if (!cartItemList.isEmpty()) {
+            CartItemDto cartItemDto = new CartItemDto();
+            for (CartItem item : cartItemList) {
+                cartItemDto = cartItemMapper.toDto(item);
+                cartItemDtos.add(cartItemDto);
+            }
+        }
+        return cartItemDtos;
+    }
+
+    @Override
+    public Optional<CartItemDto> findCartItemByCartIdAndFoodSizeId(Long cartId, Long foodSizeId) {
+        return Optional.ofNullable(cartItemMapper.toDto(cartItemRepository.findByCartIdAndFoodSizeId(cartId, foodSizeId).get()));
+    }
+
 }
+
 

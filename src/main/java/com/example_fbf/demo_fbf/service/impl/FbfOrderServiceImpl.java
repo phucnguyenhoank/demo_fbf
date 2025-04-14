@@ -25,6 +25,10 @@ public class FbfOrderServiceImpl implements FbfOrderService {
     private final CartItemRepository cartItemRepository;
     private final FoodSizeRepository foodSizeRepository;
     private final CartRepository cartRepository;
+    private final FbfOrderMapper fbfOrderMapper;
+
+    private List<FbfOrder> fbfOrder;
+    private List<FbfOrderDto> fbfOrderDtoList = new ArrayList<>();
 
     @Override
     public FbfOrder createOrder(Long fbfUserId, String phoneNumber, String address, List<Long> selectedCartItemIds) {
@@ -157,5 +161,20 @@ public class FbfOrderServiceImpl implements FbfOrderService {
         // Delete the order.
         fbfOrderRepository.delete(order);
     }
+
+    @Override
+    public Page<FbfOrderDto> getAllOrderByOrderId(PageRequest pageRequest, Long id){
+        Page<FbfOrder> fbfOrderPage = fbfOrderRepository.findByUserId(pageRequest,id);
+        if(!fbfOrderPage.isEmpty()) {
+            fbfOrder = fbfOrderPage.getContent();
+            FbfOrderDto fbfOrderDto = new FbfOrderDto();
+            for (FbfOrder item : fbfOrder) {
+                fbfOrderDto = fbfOrderMapper.toDto(item);
+                fbfOrderDtoList.add(fbfOrderDto);
+            }
+        }
+        return new PageImpl<>(fbfOrderDtoList, fbfOrderPage.getPageable(), fbfOrderPage.getTotalElements()+1);
+    }
+
 }
 

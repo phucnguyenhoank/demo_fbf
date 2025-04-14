@@ -42,5 +42,20 @@ public class FbfOrderController {
         fbfOrderService.undoOrder(fbfUserId, orderId);
         return ResponseEntity.ok(new ApiResponse<>(true, "Order undone successfully", null));
     }
+
+    @GetMapping
+    private Page<FbfOrderDto> getFbfOrderByUserId(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "userId,asc") String sort,
+            @RequestParam(defaultValue = "") Long userId
+    )
+    {
+        String[] sortParams = sort.split(",");
+        Sort.Direction direction = sortParams[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(direction, sortParams[0]));
+        return fbfOrderService.getAllOrderByOrderId(pageRequest, userId);
+    }
+
 }
 

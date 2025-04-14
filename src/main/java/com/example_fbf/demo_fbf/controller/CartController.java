@@ -1,11 +1,11 @@
 package com.example_fbf.demo_fbf.controller;
-
 import com.example_fbf.demo_fbf.config.JwtService;
 import com.example_fbf.demo_fbf.dto.ApiResponse;
 import com.example_fbf.demo_fbf.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example_fbf.demo_fbf.dto.CartDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final JwtService jwtService;
+    private final CartService cartService;
 
     @GetMapping("/id")
     public ResponseEntity<ApiResponse<Long>> getCartIdFromToken(@RequestHeader("Authorization") String authHeader) {
@@ -31,4 +32,8 @@ public class CartController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/search/by-id")
+    public ResponseEntity<CartDto> getCartById(@RequestParam(defaultValue = "") Long id){
+        return cartService.findCartById(id).map(ResponseEntity :: ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }
