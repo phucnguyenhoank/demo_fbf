@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,11 +35,11 @@ public class FoodController {
         return foodService.findByContainName(pageRequest, keyword);
     }
     @GetMapping("/search/by-id")
-    public Optional<Food> findFoodByFoodId(
+    public ResponseEntity<Food> findFoodByFoodId(
             @RequestParam(defaultValue = "") Long id
     )
     {
-        return foodService.findFoodById(id);
+        return foodService.findFoodById(id).map(ResponseEntity :: ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     @GetMapping("/search/category-id")
     public Page<FoodDto> findFoodByCatogoryId(
