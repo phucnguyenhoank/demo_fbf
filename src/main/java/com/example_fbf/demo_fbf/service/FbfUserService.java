@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 public interface FbfUserService {
-//    FbfUserDto registerUser(FbfUserDto userDto);
     FbfUser registerFbfUser(FbfUser fbfUser);
     void updatePassword(String email, String newPassword);
     FbfUser findByUsername(String username);

@@ -25,10 +25,10 @@ public class Food {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @JsonBackReference
+//    @JsonBackReference
     private Category category;
 
     @OneToMany(mappedBy = "food")
-    @JsonManagedReference
+//    @JsonManagedReference
     private List<FoodSize> sizes;
 }

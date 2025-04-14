@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class, FoodSizeMapper.class})
+@Mapper(componentModel = "spring", uses = FoodSizeMapper.class)
 public interface FoodMapper {
     FoodDto toDto(Food food);
     Food toEntity(FoodDto foodDto);

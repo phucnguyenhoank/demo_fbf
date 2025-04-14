@@ -1,10 +1,15 @@
 package com.example_fbf.demo_fbf.service.impl;
 
+import com.example_fbf.demo_fbf.dto.CartDto;
 import com.example_fbf.demo_fbf.entity.Cart;
+import com.example_fbf.demo_fbf.entity.CartItem;
+import com.example_fbf.demo_fbf.mapper.CartMapper;
 import com.example_fbf.demo_fbf.repository.CartRepository;
 import com.example_fbf.demo_fbf.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

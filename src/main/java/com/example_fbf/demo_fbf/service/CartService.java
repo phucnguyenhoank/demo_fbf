@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface CartService {
     
     Long getCartIdByUserId(Long userId);
-    public boolean AddCartItem(CartItem cartItem);
-    public Optional<CartDto> findCartById(Long id);
+    boolean AddCartItem(CartItem cartItem);
+    Optional<CartDto> findCartById(Long id);
     
 }

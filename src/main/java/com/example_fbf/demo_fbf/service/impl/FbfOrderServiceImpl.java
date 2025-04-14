@@ -1,9 +1,14 @@
 package com.example_fbf.demo_fbf.service.impl;
 
+import com.example_fbf.demo_fbf.dto.FbfOrderDto;
 import com.example_fbf.demo_fbf.entity.*;
+import com.example_fbf.demo_fbf.mapper.FbfOrderMapper;
 import com.example_fbf.demo_fbf.repository.*;
 import com.example_fbf.demo_fbf.service.FbfOrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -164,7 +169,7 @@ public class FbfOrderServiceImpl implements FbfOrderService {
 
     @Override
     public Page<FbfOrderDto> getAllOrderByOrderId(PageRequest pageRequest, Long id){
-        Page<FbfOrder> fbfOrderPage = fbfOrderRepository.findByUserId(pageRequest,id);
+        Page<FbfOrder> fbfOrderPage = fbfOrderRepository.findByFbfUserId(pageRequest,id);
         if(!fbfOrderPage.isEmpty()) {
             fbfOrder = fbfOrderPage.getContent();
             FbfOrderDto fbfOrderDto = new FbfOrderDto();
