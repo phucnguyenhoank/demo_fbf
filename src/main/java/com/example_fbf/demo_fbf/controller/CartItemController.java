@@ -1,5 +1,6 @@
 package com.example_fbf.demo_fbf.controller;
 
+import com.example_fbf.demo_fbf.config.JwtService;
 import com.example_fbf.demo_fbf.dto.ApiResponse;
 import com.example_fbf.demo_fbf.dto.CartItemDto;
 import com.example_fbf.demo_fbf.dto.CartItemRequest;
@@ -18,27 +19,34 @@ public class CartItemController {
 
     private final CartItemService cartItemService;
     private final CartItemMapper cartItemMapper;
+    private final JwtService jwtService;
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse<CartItemDto>> addCartItem(@RequestBody CartItemRequest request) {
+    public ResponseEntity<ApiResponse<CartItemDto>> addCartItem(@RequestHeader("Authorization") String authHeader, @RequestBody CartItemRequest request) {
+        String token = authHeader.substring(7);
+        Long cartId = jwtService.getCartIdFromToken(token);
         CartItem createdCartItem = cartItemService.createCartItem(
-                request.getCartId(),
+                cartId,
                 request.getFoodSizeId(),
                 request.getQuantity());
         CartItemDto cartItemDto = cartItemMapper.toDto(createdCartItem);
         return ResponseEntity.ok(new ApiResponse<>(true, "Created CartItem", cartItemDto));
     }
 
-    @DeleteMapping("/{cartId}/{cartItemId}")
-    public ResponseEntity<ApiResponse<String>> deleteCartItem(@PathVariable Long cartId, @PathVariable Long cartItemId) {
+    @DeleteMapping("/{cartItemId}")
+    public ResponseEntity<ApiResponse<String>> deleteCartItem(@RequestHeader("Authorization") String authHeader, @PathVariable Long cartItemId) {
+        String token = authHeader.substring(7);
+        Long cartId = jwtService.getCartIdFromToken(token);
         cartItemService.deleteCartItem(cartId, cartItemId);
         return ResponseEntity.ok(new ApiResponse<>(true, "Cart item deleted successfully", "No addition"));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ApiResponse<CartItemDto>> updateCartItem(@RequestBody CartItemUpdateRequest updateRequest) {
+    public ResponseEntity<ApiResponse<CartItemDto>> updateCartItem(@RequestHeader("Authorization") String authHeader, @RequestBody CartItemUpdateRequest updateRequest) {
+        String token = authHeader.substring(7);
+        Long cartId = jwtService.getCartIdFromToken(token);
         CartItem updatedCartItem = cartItemService.updateCartItem(
-                updateRequest.getCartId(),
+                cartId,
                 updateRequest.getCartItemId(),
                 updateRequest.getNewQuantity(),
                 updateRequest.getNewSize());

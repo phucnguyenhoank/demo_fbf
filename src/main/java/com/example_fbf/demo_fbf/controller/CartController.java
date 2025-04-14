@@ -17,7 +17,6 @@ public class CartController {
     @GetMapping("/id")
     public ResponseEntity<ApiResponse<Long>> getCartIdFromToken(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
-
         Long cartId = jwtService.getCartIdFromToken(token);
         String username = jwtService.extractUsername(token);
 
