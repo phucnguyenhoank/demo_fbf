@@ -23,6 +23,6 @@ public interface FbfOrderService {
      *
      * @param orderId the ID of the order to undo
      */
-    void undoOrder(Long orderId);
+    void undoOrder(Long fbfUserId, Long orderId);
 }
 

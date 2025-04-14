@@ -30,6 +30,22 @@ public class GlobalExceptionHandler {
                 .body(new ApiResponse<>(false, "Invalid input", errorDetails));
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ApiResponse<Map<String, Object>>> handleIllegalState(
+            IllegalStateException ex,
+            HttpServletRequest request) {
+
+        Map<String, Object> errorDetails = new HashMap<>();
+        errorDetails.put("exception", ex.getClass().getSimpleName());
+        errorDetails.put("message", ex.getMessage());
+        errorDetails.put("timestamp", new Date());
+        errorDetails.put("path", request.getRequestURI());
+
+        return ResponseEntity
+                .badRequest()
+                .body(new ApiResponse<>(false, "Unauthorized input", errorDetails));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Map<String, Object>>> handleGeneral(Exception ex, HttpServletRequest request) {
         ex.printStackTrace(); // ✅ In ra lỗi chi tiết trong log

@@ -17,12 +17,14 @@ public class CartController {
     @GetMapping("/id")
     public ResponseEntity<ApiResponse<Long>> getCartIdFromToken(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
-        Long cartId = jwtService.getCartIdFromToken(token);
         String username = jwtService.extractUsername(token);
+        Long fbfUserId = jwtService.getFbfUserIdFromToken(token);
+        Long cartId = jwtService.getCartIdFromToken(token);
+
 
         ApiResponse<Long> response = new ApiResponse<>(
                 true,
-                "Cart ID fetched successfully for user: " + username,
+                "Cart ID fetched successfully for user: " + username + "has id: " + fbfUserId,
                 cartId
         );
 

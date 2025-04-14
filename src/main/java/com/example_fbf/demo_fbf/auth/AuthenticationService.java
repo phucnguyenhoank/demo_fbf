@@ -61,6 +61,7 @@ public class AuthenticationService {
         // create new cart and save new user
         fbfUserService.registerFbfUser(fbfUser);
         Map<String, Object> claims = new HashMap<>();
+        claims.put("fbfUserId", fbfUser.getId());
         claims.put("cartId", fbfUser.getCart().getId());
         var jwtToken = jwtService.generateToken(claims, fbfUser);
         return AuthenticationResponse.builder()
@@ -75,6 +76,7 @@ public class AuthenticationService {
         ));
         var fbfUser = fbfUserService.findByUsername(request.getUsername());
         Map<String, Object> claims = new HashMap<>();
+        claims.put("fbfUserId", fbfUser.getId());
         claims.put("cartId", fbfUser.getCart().getId());
         var jwtToken = jwtService.generateToken(claims, fbfUser);
         return AuthenticationResponse.builder().token(jwtToken).build();

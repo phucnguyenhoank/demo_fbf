@@ -1,5 +1,6 @@
 package com.example_fbf.demo_fbf.controller;
 
+import com.example_fbf.demo_fbf.config.JwtService;
 import com.example_fbf.demo_fbf.dto.ApiResponse;
 import com.example_fbf.demo_fbf.dto.FbfOrderDto;
 import com.example_fbf.demo_fbf.dto.OrderRequest;
@@ -18,11 +19,14 @@ public class FbfOrderController {
 
     private final FbfOrderService fbfOrderService;
     private final FbfOrderMapper fbfOrderMapper;
+    private final JwtService jwtService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<FbfOrderDto>> createOrder(@RequestBody OrderRequest request) {
+    public ResponseEntity<ApiResponse<FbfOrderDto>> createOrder(@RequestHeader("Authorization") String authHeader, @RequestBody OrderRequest request) {
+        String token = authHeader.substring(7);
+        Long fbfUserId = jwtService.getFbfUserIdFromToken(token);
         FbfOrder order = fbfOrderService.createOrder(
-                request.getFbfUserId(),
+                fbfUserId,
                 request.getPhoneNumber(),
                 request.getAddress(),
                 request.getSelectedCartItemIds()
@@ -32,8 +36,10 @@ public class FbfOrderController {
     }
 
     @DeleteMapping("/{orderId}/undo")
-    public ResponseEntity<ApiResponse<String>> undoOrder(@PathVariable Long orderId) {
-        fbfOrderService.undoOrder(orderId);
+    public ResponseEntity<ApiResponse<String>> undoOrder(@RequestHeader("Authorization") String authHeader, @PathVariable Long orderId) {
+        String token = authHeader.substring(7);
+        Long fbfUserId = jwtService.getFbfUserIdFromToken(token);
+        fbfOrderService.undoOrder(fbfUserId, orderId);
         return ResponseEntity.ok(new ApiResponse<>(true, "Order undone successfully", null));
     }
 }

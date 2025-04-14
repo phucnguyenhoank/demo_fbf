@@ -112,10 +112,14 @@ public class FbfOrderServiceImpl implements FbfOrderService {
     }
 
     @Override
-    public void undoOrder(Long orderId) {
+    public void undoOrder(Long fbfUserId, Long orderId) {
         // Retrieve the order to be canceled.
         FbfOrder order = fbfOrderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found with id: " + orderId));
+
+        if (!order.getFbfUser().getId().equals(fbfUserId)) {
+            throw new IllegalStateException("Unauthorized: Order does not belong to the user");
+        }
 
         // For each OrderItem, reverse the stock reduction and re-create a corresponding CartItem.
         for (OrderItem orderItem : order.getItems()) {

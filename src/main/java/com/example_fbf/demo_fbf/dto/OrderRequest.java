@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderRequest {
-    private Long fbfUserId;
     private String phoneNumber;
     private String address;
     private List<Long> selectedCartItemIds;

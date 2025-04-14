@@ -80,7 +80,12 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    public Long getFbfUserIdFromToken(String token) {
+        return extractAllClaims(token).get("fbfUserId", Long.class);
+    }
+
     public Long getCartIdFromToken(String token) {
         return extractAllClaims(token).get("cartId", Long.class);
     }
+
 }
