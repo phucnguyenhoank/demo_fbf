@@ -14,6 +14,6 @@ public class FoodDto {
     private String name;
     private String description;
     private String imageUrl;
-    private CategoryDto category;
+    private Long categoryId;
     private List<FoodSizeDto> sizes;
 }
