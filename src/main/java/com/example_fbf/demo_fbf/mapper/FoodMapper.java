@@ -9,6 +9,9 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = FoodSizeMapper.class)
 public interface FoodMapper {
+    @Mapping(source = "category.id", target = "categoryId")
     FoodDto toDto(Food food);
+
+    @Mapping(source = "categoryId", target = "category.id")
     Food toEntity(FoodDto foodDto);
 }
