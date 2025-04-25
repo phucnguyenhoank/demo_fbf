@@ -32,7 +32,8 @@ public class FbfOrderController {
                 fbfUserId,
                 request.getPhoneNumber(),
                 request.getAddress(),
-                request.getSelectedCartItemIds()
+                request.getSelectedCartItemIds(),
+                request.getDiscountCode()
         );
         FbfOrderDto fbfOrderDto = fbfOrderMapper.toDto(order);
         return ResponseEntity.ok(new ApiResponse<>(true, "Successfully created FbfOrder", fbfOrderDto));

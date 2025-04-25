@@ -30,13 +30,14 @@ public class FbfOrderServiceImpl implements FbfOrderService {
     private final CartItemRepository cartItemRepository;
     private final FoodSizeRepository foodSizeRepository;
     private final CartRepository cartRepository;
+    private final DiscountCodeRepository discountCodeRepository;
     private final FbfOrderMapper fbfOrderMapper;
 
     private List<FbfOrder> fbfOrder;
     private List<FbfOrderDto> fbfOrderDtoList = new ArrayList<>();
 
     @Override
-    public FbfOrder createOrder(Long fbfUserId, String phoneNumber, String address, List<Long> selectedCartItemIds) {
+    public FbfOrder createOrder(Long fbfUserId, String phoneNumber, String address, List<Long> selectedCartItemIds, String discountCode) {
         // Lấy FbfUser và giỏ hàng
         FbfUser fbfUser = fbfUserRepository.findById(fbfUserId)
                 .orElseThrow(() -> new IllegalArgumentException("FbfUser not found with id: " + fbfUserId));
@@ -89,15 +90,28 @@ public class FbfOrderServiceImpl implements FbfOrderService {
                     .setScale(3, RoundingMode.HALF_UP)
                     .doubleValue();
 
-
             OrderItem orderItem = new OrderItem();
             orderItem.setFoodSize(foodSize);
             orderItem.setQuantity(aggregatedQuantity);
             orderItem.setDiscountPercentage(discountPercentage);
-            orderItem.setDiscountedPrice(discountedUnitPrice); // Giá đơn vị
+            orderItem.setDiscountedPrice(discountedUnitPrice);
             orderItems.add(orderItem);
 
             totalOrderPrice += discountedUnitPrice * aggregatedQuantity;
+        }
+
+        // Apply discount code if provided and valid
+        double finalPrice = totalOrderPrice;
+        DiscountCode appliedDiscountCode = null;
+        if (discountCode != null && !discountCode.isEmpty()) {
+            DiscountCode discountCodeEntity = discountCodeRepository.findByCode(discountCode)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid discount code: " + discountCode));
+            if (discountCodeEntity.getExpirationDate() != null && discountCodeEntity.getExpirationDate().isBefore(LocalDateTime.now())) {
+                throw new IllegalArgumentException("Discount code has expired: " + discountCode);
+            }
+            double discountPercentage = discountCodeEntity.getDiscountPercentage();
+            finalPrice = totalOrderPrice * (1 - discountPercentage / 100.0);
+            appliedDiscountCode = discountCodeEntity;
         }
 
         FbfOrder fbfOrder = new FbfOrder();
@@ -105,8 +119,9 @@ public class FbfOrderServiceImpl implements FbfOrderService {
         fbfOrder.setPhoneNumber(phoneNumber);
         fbfOrder.setAddress(address);
         fbfOrder.setCreatedAt(LocalDateTime.now());
-        fbfOrder.setDiscountedTotalPrice(totalOrderPrice);
-        // Set items → will auto-save if cascade is enabled
+        fbfOrder.setDiscountedTotalPrice(finalPrice);
+        fbfOrder.setDiscountCode(appliedDiscountCode);
+        // Set items
         for (OrderItem item : orderItems) {
             item.setFbfOrder(fbfOrder);
         }
@@ -114,15 +129,14 @@ public class FbfOrderServiceImpl implements FbfOrderService {
 
         // Lưu đơn hàng
         FbfOrder savedOrder = fbfOrderRepository.save(fbfOrder);
-        // Xóa hết các CartItem đã xử lý (tùy vào nghiệp vụ, có thể xóa toàn bộ giỏ hàng)
         cartItemRepository.deleteAll(selectedCartItems);
-        savedOrder.setItems(orderItems); // optional: to reflect changes in response or service
+        savedOrder.setItems(orderItems); // Optional: to reflect changes in response
         return savedOrder;
     }
 
     @Override
     public void undoOrder(Long fbfUserId, Long orderId) {
-        // Retrieve the order to be canceled.
+        // Retrieve the order to be canceled
         FbfOrder order = fbfOrderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found with id: " + orderId));
 
@@ -130,23 +144,19 @@ public class FbfOrderServiceImpl implements FbfOrderService {
             throw new IllegalStateException("Unauthorized: Order does not belong to the user");
         }
 
-        // For each OrderItem, reverse the stock reduction and re-create a corresponding CartItem.
+        // For each OrderItem, reverse the stock reduction and re-create a corresponding CartItem
         for (OrderItem orderItem : order.getItems()) {
             FoodSize foodSize = orderItem.getFoodSize();
             int quantity = orderItem.getQuantity();
 
-            // Reverse stock reduction by adding back the quantity.
+            // Reverse stock reduction
             foodSize.setStock(foodSize.getStock() + quantity);
             foodSizeRepository.save(foodSize);
 
-            // Re-create a CartItem from the OrderItem.
-            // (This step is optional and depends on your business process.
-            // If you simply want to cancel the order without restoring the cart,
-            // you can skip this portion.)
+            // Re-create a CartItem
             FbfUser user = order.getFbfUser();
             Cart cart = user.getCart();
             if (cart == null) {
-                // Optionally create a cart if not exists.
                 cart = new Cart();
                 cart.setFbfUser(user);
                 cart = cartRepository.save(cart);
@@ -156,14 +166,13 @@ public class FbfOrderServiceImpl implements FbfOrderService {
             cartItem.setCart(cart);
             cartItem.setFoodSize(foodSize);
             cartItem.setQuantity(quantity);
-            // Optionally, set the price and discount values.
             cartItem.setPrice(foodSize.getPrice());
             cartItem.setDiscountPercentage(orderItem.getDiscountPercentage());
 
             cartItemRepository.save(cartItem);
         }
 
-        // Delete the order.
+        // Delete the order, which removes the discount code association
         fbfOrderRepository.delete(order);
     }
 

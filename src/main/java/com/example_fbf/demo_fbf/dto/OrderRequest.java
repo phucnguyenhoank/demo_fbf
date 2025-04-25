@@ -12,4 +12,5 @@ public class OrderRequest {
     private String phoneNumber;
     private String address;
     private List<Long> selectedCartItemIds;
+    private String discountCode; // New field to hold the discount code
 }
