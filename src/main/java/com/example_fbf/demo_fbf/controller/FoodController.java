@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("v1/api/food")
+@RequestMapping("/api/v1/food")
 public class FoodController {
     @Autowired
     private FoodService foodService;
@@ -42,7 +42,7 @@ public class FoodController {
         return foodService.findFoodById(id).map(ResponseEntity :: ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     @GetMapping("/search/category-id")
-    public Page<FoodDto> findFoodByCatogoryId(
+    public Page<FoodDto> findFoodByCategoryId(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "name,asc") String sort,
@@ -54,7 +54,7 @@ public class FoodController {
         return foodService.findFoodByCategoryId(pageRequest, id);
     }
     @GetMapping("/all")
-    public Page<FoodDto> getAllFood(
+    public Page<FoodDto> getAllFoods(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "name,asc") String sort

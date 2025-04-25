@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("v1/api/food-size")
+@RequestMapping("/api/v1/food-size")
 public class FoodSizeController {
     @Autowired
     private FoodSizeServiceImpl foodSizeService;
