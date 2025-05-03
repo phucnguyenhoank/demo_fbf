@@ -22,4 +22,11 @@ public class OtpServiceImpl implements OtpService {
         return otpRepository.findTopByEmailOrderByExpirationTimeDesc(email)
                 .orElseThrow(() -> new IllegalArgumentException("No OTP found for email: " + email));
     }
+
+    @Override
+    public Otp saveOtp(Otp otp) {
+        return otpRepository.save(otp);
+    }
+
+
 }

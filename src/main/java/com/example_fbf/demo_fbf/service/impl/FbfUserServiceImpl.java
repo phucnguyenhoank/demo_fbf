@@ -65,5 +65,13 @@ public class FbfUserServiceImpl implements FbfUserService {
         return fbfUserRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
     }
+
+    public boolean existsByEmail(String email) {
+        return fbfUserRepository.findByEmail(email).isPresent();
+    }
+
+    public void updateUser(FbfUser user) {
+        fbfUserRepository.save(user);
+    }
 }
 

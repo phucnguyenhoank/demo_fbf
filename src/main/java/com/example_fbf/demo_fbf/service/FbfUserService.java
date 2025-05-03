@@ -16,5 +16,10 @@ public interface FbfUserService {
     void updatePassword(String email, String newPassword);
     FbfUser findByUsername(String username);
     FbfUser findByEmail(String email);
+
+    boolean existsByEmail(String email);
+
+    void updateUser(FbfUser user);
+
 }
 

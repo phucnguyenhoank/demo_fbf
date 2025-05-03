@@ -1,12 +1,10 @@
 package com.example_fbf.demo_fbf.controller;
 
-import com.example_fbf.demo_fbf.auth.AuthenticationRequest;
-import com.example_fbf.demo_fbf.auth.AuthenticationResponse;
-import com.example_fbf.demo_fbf.auth.AuthenticationService;
-import com.example_fbf.demo_fbf.auth.RegisterRequest;
+import com.example_fbf.demo_fbf.auth.*;
 import com.example_fbf.demo_fbf.entity.Otp;
 import com.example_fbf.demo_fbf.repository.OtpRepository;
 import com.example_fbf.demo_fbf.service.EmailService;
+import com.example_fbf.demo_fbf.service.OtpService;
 import com.example_fbf.demo_fbf.util.OtpGenerator;
 import com.example_fbf.demo_fbf.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +22,7 @@ public class AuthenticationController {
 
     private final EmailService emailService;
 
-    private final OtpRepository otpRepository;
+    private final OtpService otpService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
@@ -39,7 +37,7 @@ public class AuthenticationController {
         LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(5);
 
         Otp otpRecord = new Otp(email, otp, expirationTime);
-        otpRepository.save(otpRecord);
+        otpService.saveOtp(otpRecord);
         emailService.sendOtpAsync(email, otp);
         ApiResponse<String> response = new ApiResponse<>(true, "OTP sent to email.", "No addition");
 
@@ -49,6 +47,18 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
+    }
+
+    @PostMapping("/reset-password-request")
+    public ResponseEntity<ApiResponse<String>> requestPasswordReset(@RequestParam String email) {
+        ApiResponse<String> response = authenticationService.requestPasswordReset(email);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponse<String>> resetPassword(@RequestBody ResetPasswordRequest request) {
+        ApiResponse<String> response = authenticationService.resetPassword(request);
+        return ResponseEntity.ok(response);
     }
 
 }
