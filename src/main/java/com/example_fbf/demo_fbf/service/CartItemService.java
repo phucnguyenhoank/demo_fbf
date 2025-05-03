@@ -10,7 +10,8 @@ public interface CartItemService {
     void deleteCartItem(Long cartId, Long cartItemId);
     CartItem updateCartItem(Long cartId, Long cartItemId, Integer newQuantity, String newSize);
     
-    public List<CartItemDto> findCartItemByCartId(Long id);
-    public Optional<CartItemDto> findCartItemByCartIdAndFoodSizeId(Long cartId, Long foodSizeId);
+    List<CartItemDto> findCartItemByCartId(Long id);
+    Optional<CartItemDto> findCartItemByCartIdAndFoodSizeId(Long cartId, Long foodSizeId);
 
+    List<CartItem> findByCartId(Long cartId);
 }

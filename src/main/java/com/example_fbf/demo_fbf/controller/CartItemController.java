@@ -1,10 +1,7 @@
 package com.example_fbf.demo_fbf.controller;
 
 import com.example_fbf.demo_fbf.config.JwtService;
-import com.example_fbf.demo_fbf.dto.ApiResponse;
-import com.example_fbf.demo_fbf.dto.CartItemDto;
-import com.example_fbf.demo_fbf.dto.CartItemRequest;
-import com.example_fbf.demo_fbf.dto.CartItemUpdateRequest;
+import com.example_fbf.demo_fbf.dto.*;
 import com.example_fbf.demo_fbf.entity.CartItem;
 import com.example_fbf.demo_fbf.mapper.CartItemMapper;
 import com.example_fbf.demo_fbf.service.CartItemService;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +21,42 @@ public class CartItemController {
     private final CartItemService cartItemService;
     private final CartItemMapper cartItemMapper;
     private final JwtService jwtService;
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<CartItemDto>>> getAllCartItemInCart(
+            @RequestHeader("Authorization") String authHeader) {
+
+        // Extract JWT token
+        String token = authHeader.substring(7);
+        Long cartId = jwtService.getCartIdFromToken(token);
+
+        // Get CartItems by cartId
+        List<CartItem> cartItems = cartItemService.findByCartId(cartId);
+
+        // Map to DTOs
+        List<CartItemDto> cartItemDtos = cartItems.stream()
+                .map(cartItemMapper::toDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new ApiResponse<>(true, "Cart items fetched", cartItemDtos));
+    }
+
+    @GetMapping("/display")
+    public ResponseEntity<ApiResponse<List<CartItemDisplayDto>>> getCartDisplay(
+            @RequestHeader("Authorization") String authHeader) {
+
+        String token = authHeader.substring(7);
+        Long cartId = jwtService.getCartIdFromToken(token);
+
+        List<CartItem> cartItems = cartItemService.findByCartId(cartId);
+        List<CartItemDisplayDto> displayDtos = cartItems.stream()
+                .map(cartItemMapper::toDisplayDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new ApiResponse<>(true, "Cart items fetched", displayDtos));
+    }
+
+
 
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<CartItemDto>> addCartItem(@RequestHeader("Authorization") String authHeader, @RequestBody CartItemRequest request) {
@@ -64,7 +98,7 @@ public class CartItemController {
     }
 
     @GetMapping("/search/by-cart-foodsize")
-    public ResponseEntity<CartItemDto> getCartItemBYCartIdAndSize(
+    public ResponseEntity<CartItemDto> getCartItemByCartIdAndSize(
             @RequestParam Long cartId,
             @RequestParam Long foodSizeid
     )
