@@ -1,20 +1,28 @@
 package com.example_fbf.demo_fbf.service.impl;
 
+import com.example_fbf.demo_fbf.config.OrderUndoScheduler;
 import com.example_fbf.demo_fbf.dto.FbfOrderDto;
 import com.example_fbf.demo_fbf.entity.*;
 import com.example_fbf.demo_fbf.mapper.FbfOrderMapper;
 import com.example_fbf.demo_fbf.repository.*;
 import com.example_fbf.demo_fbf.service.FbfOrderService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +32,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional  // Đảm bảo toàn bộ quá trình được rollback nếu có lỗi
 public class FbfOrderServiceImpl implements FbfOrderService {
-
+    private final ApplicationContext applicationContext;
     private final FbfOrderRepository fbfOrderRepository;
     private final FbfUserRepository fbfUserRepository;
     private final CartItemRepository cartItemRepository;
@@ -187,6 +195,26 @@ public class FbfOrderServiceImpl implements FbfOrderService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(dtoList, fbfOrderPage.getPageable(), fbfOrderPage.getTotalElements());
+    }
+
+    @Override
+    public FbfOrder createUndoOrder(Long fbfUserId, String phoneNumber, String address, List<Long> selectedCartItemIds, String discountCode) {
+        FbfOrder createdFbfOrder = createOrder(fbfUserId, phoneNumber, address, selectedCartItemIds, discountCode);
+        Instant triggerTime = Instant.now().plus(3, ChronoUnit.MINUTES);
+        OrderUndoScheduler scheduler = applicationContext.getBean(OrderUndoScheduler.class);
+        scheduler.scheduleUndoOrder(createdFbfOrder.getId(), triggerTime);
+        return createdFbfOrder;
+    }
+
+    @Override
+    public void confirmOrder(Long userId, Long orderId) {
+        FbfOrder o = fbfOrderRepository.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found"));
+        if (o.getFbfUser().getId().equals(userId)
+                && o.getStatus() == FbfOrderStatus.PENDING) {
+            o.setStatus(FbfOrderStatus.CONFIRMED);
+            fbfOrderRepository.save(o);
+        }
     }
 
 }

@@ -13,4 +13,7 @@ public interface FbfOrderService {
 
     Page<FbfOrderDto> getAllFbfOrdersByFbfUserId(PageRequest pageRequest, Long fbfUserId);
 
+    FbfOrder createUndoOrder(Long fbfUserId, String phoneNumber, String address, List<Long> selectedCartItemIds, String discountCode);
+
+    void confirmOrder(Long userId, Long orderId);
 }

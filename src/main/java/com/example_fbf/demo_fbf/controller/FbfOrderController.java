@@ -46,6 +46,38 @@ public class FbfOrderController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Order undone successfully", null));
     }
 
+    @PostMapping("/create-undo")
+    public ResponseEntity<ApiResponse<FbfOrderDto>> createUndoOrder(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody OrderRequest request) {
+        // Lấy token và userId
+        String token = authHeader.substring(7);
+        Long fbfUserId = jwtService.getFbfUserIdFromToken(token);
+
+        // Tạo order dạng UndoOrder (tuỳ business logic của bạn)
+        FbfOrder order = fbfOrderService.createUndoOrder(
+                fbfUserId,
+                request.getPhoneNumber(),
+                request.getAddress(),
+                request.getSelectedCartItemIds(),
+                request.getDiscountCode()
+        );
+
+        FbfOrderDto dto = fbfOrderMapper.toDto(order);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Created Undo Order", dto));
+    }
+
+    @PostMapping("/{orderId}/confirm")
+    public ResponseEntity<ApiResponse<String>> confirmOrder(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long orderId) {
+        String token = authHeader.substring(7);
+        Long fbfUserId = jwtService.getFbfUserIdFromToken(token);
+
+        fbfOrderService.confirmOrder(fbfUserId, orderId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Order confirmed", null));
+    }
+
     @GetMapping("/get-mine")
     private Page<FbfOrderDto> getAllFbfOrdersByFbfUserId(
             @RequestHeader("Authorization") String authHeader,

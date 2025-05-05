@@ -34,5 +34,10 @@ public class FbfOrder {
 
     @OneToMany(mappedBy = "fbfOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private FbfOrderStatus status = FbfOrderStatus.PENDING;
+
 }
 
