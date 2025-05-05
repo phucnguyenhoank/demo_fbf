@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,18 +46,21 @@ public class FbfOrderController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Order undone successfully", null));
     }
 
-    @GetMapping
-    private Page<FbfOrderDto> getFbfOrderByUserId(
+    @GetMapping("/get-mine")
+    private Page<FbfOrderDto> getAllFbfOrdersByFbfUserId(
+            @RequestHeader("Authorization") String authHeader,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "userId,asc") String sort,
-            @RequestParam(defaultValue = "") Long userId
-    )
-    {
+            @RequestParam(defaultValue = "createdAt,desc") String sort
+    ) {
+        String token = authHeader.substring(7);
+        Long fbfUserId = jwtService.getFbfUserIdFromToken(token);
+
         String[] sortParams = sort.split(",");
         Sort.Direction direction = sortParams[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(direction, sortParams[0]));
-        return fbfOrderService.getAllOrderByOrderId(pageRequest, userId);
+
+        return fbfOrderService.getAllFbfOrdersByFbfUserId(pageRequest, fbfUserId);
     }
 
 }

@@ -11,6 +11,6 @@ public interface FbfOrderService {
 
     void undoOrder(Long fbfUserId, Long orderId);
 
-    Page<FbfOrderDto> getAllOrderByOrderId(PageRequest pageRequest, Long id);
+    Page<FbfOrderDto> getAllFbfOrdersByFbfUserId(PageRequest pageRequest, Long fbfUserId);
 
 }

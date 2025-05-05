@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface FbfOrderRepository extends JpaRepository<FbfOrder, Long> {
     public List<FbfOrder> findAll();
-    public Page<FbfOrder> findByFbfUserId(PageRequest pageRequest, Long id);
+    public Page<FbfOrder> findByFbfUser_Id(PageRequest pageRequest, Long id);
 }

@@ -177,17 +177,16 @@ public class FbfOrderServiceImpl implements FbfOrderService {
     }
 
     @Override
-    public Page<FbfOrderDto> getAllOrderByOrderId(PageRequest pageRequest, Long id){
-        Page<FbfOrder> fbfOrderPage = fbfOrderRepository.findByFbfUserId(pageRequest,id);
-        if(!fbfOrderPage.isEmpty()) {
-            fbfOrder = fbfOrderPage.getContent();
-            FbfOrderDto fbfOrderDto = new FbfOrderDto();
-            for (FbfOrder item : fbfOrder) {
-                fbfOrderDto = fbfOrderMapper.toDto(item);
-                fbfOrderDtoList.add(fbfOrderDto);
-            }
-        }
-        return new PageImpl<>(fbfOrderDtoList, fbfOrderPage.getPageable(), fbfOrderPage.getTotalElements()+1);
+    public Page<FbfOrderDto> getAllFbfOrdersByFbfUserId(PageRequest pageRequest, Long fbfUserId) {
+        Page<FbfOrder> fbfOrderPage = fbfOrderRepository.findByFbfUser_Id(pageRequest, fbfUserId);
+
+        List<FbfOrderDto> dtoList = fbfOrderPage
+                .getContent()
+                .stream()
+                .map(fbfOrderMapper::toDto)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(dtoList, fbfOrderPage.getPageable(), fbfOrderPage.getTotalElements());
     }
 
 }
