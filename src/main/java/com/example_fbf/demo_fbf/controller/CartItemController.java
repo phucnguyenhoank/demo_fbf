@@ -42,7 +42,7 @@ public class CartItemController {
     }
 
     @GetMapping("/display")
-    public ResponseEntity<ApiResponse<List<CartItemDisplayDto>>> getCartDisplay(
+    public ResponseEntity<ApiResponse<List<CartItemDisplayDto>>> getCartItemsDisplay(
             @RequestHeader("Authorization") String authHeader) {
 
         String token = authHeader.substring(7);

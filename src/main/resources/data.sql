@@ -24,12 +24,12 @@ VALUES
 INSERT INTO `fastbreakfastdb_demo`.`food`
     (`category_id`, `id`, `description`, `image_url`, `name`)
 VALUES
-    (1, 1, 'Bánh mì thịt nướng ngon tuyệt', 'https://example.com/banhmi.jpg', 'Bánh mì thịt nướng'),
-    (2, 2, 'Phở bò tái chín đậm đà', 'https://example.com/pho_bo.jpg', 'Phở bò tái'),
-    (2, 3, 'Bún chả truyền thống Hà Nội', 'https://example.com/bun_cha.jpg', 'Bún chả'),
-    (3, 4, 'Xôi gà thơm ngon', 'https://example.com/xoi_ga.jpg', 'Xôi gà'),
-    (4, 5, 'Bánh bao chả hấp dẫn', 'https://example.com/banh_bao.jpg', 'Bánh bao chả'),
-    (5, 6, 'Trà đào mát lạnh, thơm ngon', 'https://example.com/tra_dao.jpg', 'Trà đào');
+    (1, 1, 'Bánh mì thịt nướng ngon tuyệt', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1746324093/food1_vp36jg.png', 'Bánh mì thịt nướng'),
+    (2, 2, 'Phở bò tái chín đậm đà', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1746324093/food1_vp36jg.png', 'Phở bò tái'),
+    (2, 3, 'Bún chả truyền thống Hà Nội', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1746324093/food1_vp36jg.png', 'Bún chả'),
+    (3, 4, 'Xôi gà thơm ngon', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1746324093/food1_vp36jg.png', 'Xôi gà'),
+    (4, 5, 'Bánh bao chả hấp dẫn', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1746324093/food1_vp36jg.png', 'Bánh bao chả'),
+    (5, 6, 'Trà đào mát lạnh, thơm ngon', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1746324093/food1_vp36jg.png', 'Trà đào');
 
 -- Food 1: Bánh mì thịt nướng
 INSERT INTO `fastbreakfastdb_demo`.`food_size`

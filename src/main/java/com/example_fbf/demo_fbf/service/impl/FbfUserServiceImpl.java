@@ -70,8 +70,13 @@ public class FbfUserServiceImpl implements FbfUserService {
         return fbfUserRepository.findByEmail(email).isPresent();
     }
 
-    public void updateUser(FbfUser user) {
-        fbfUserRepository.save(user);
+    public FbfUser updateUser(FbfUser user) {
+        return fbfUserRepository.save(user);
+    }
+
+    public FbfUser getUserById(Long id) {
+        return fbfUserRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 }
 
