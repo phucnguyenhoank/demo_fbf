@@ -84,4 +84,11 @@ public class FoodServiceImpl implements FoodService {
         }
         return new PageImpl<>(foodDtoList, foodPage.getPageable(), foodPage.getTotalElements());
     }
+
+    @Override
+    public FoodDto getFoodById(Long id) {
+        Food food = foodRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy món ăn với id = " + id));
+        return foodMapper.toDto(food);
+    }
 }

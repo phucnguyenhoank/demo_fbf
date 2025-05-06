@@ -15,4 +15,5 @@ public interface FoodService {
     public Page<FoodDto> findFoodByCategoryId(PageRequest pageRequest, Long id);
     public Page<FoodDto> findAllFood(PageRequest pageRequest);
     public Page<FoodDto> findFoodByPriceBetween(Pageable pageable, Double min, Double max);
+    FoodDto getFoodById(Long id);
 }
