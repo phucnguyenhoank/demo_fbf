@@ -26,8 +26,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authz -> authz
 //                                .anyRequest().permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/food/all").permitAll()
-                        .requestMatchers("/api/v1/food/{id}").permitAll()
+                        .requestMatchers("/api/v1/food/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

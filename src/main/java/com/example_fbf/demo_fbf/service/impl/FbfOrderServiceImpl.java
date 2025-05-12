@@ -8,13 +8,10 @@ import com.example_fbf.demo_fbf.repository.*;
 import com.example_fbf.demo_fbf.service.FbfOrderService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -212,7 +209,7 @@ public class FbfOrderServiceImpl implements FbfOrderService {
                 .orElseThrow(() -> new EntityNotFoundException("Order not found"));
         if (o.getFbfUser().getId().equals(userId)
                 && o.getStatus() == FbfOrderStatus.PENDING) {
-            o.setStatus(FbfOrderStatus.CONFIRMED);
+            o.setStatus(FbfOrderStatus.PAID);
             fbfOrderRepository.save(o);
         }
     }
