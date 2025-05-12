@@ -28,5 +28,6 @@ public class Food {
     private Category category;
 
     @OneToMany(mappedBy = "food")
+    @JsonManagedReference
     private List<FoodSize> sizes;
 }

@@ -1,5 +1,6 @@
 package com.example_fbf.demo_fbf.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,6 +34,7 @@ public class FbfOrder {
     private DiscountCode discountCode;
 
     @OneToMany(mappedBy = "fbfOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<OrderItem> items;
 
     @Column(nullable = false)
