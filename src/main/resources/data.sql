@@ -24,66 +24,67 @@ VALUES
 INSERT INTO `fastbreakfastdb_demo`.`food`
     (`category_id`, `id`, `description`, `image_url`, `name`)
 VALUES
-    (1, 1, 'Bánh mì thịt nướng ngon tuyệt', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1746324093/food1_vp36jg.png', 'Bánh mì thịt nướng'),
-    (2, 2, 'Phở bò tái chín đậm đà', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1746324093/food1_vp36jg.png', 'Phở bò tái'),
-    (2, 3, 'Bún chả truyền thống Hà Nội', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1746324093/food1_vp36jg.png', 'Bún chả'),
-    (3, 4, 'Xôi gà thơm ngon', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1746324093/food1_vp36jg.png', 'Xôi gà'),
-    (4, 5, 'Bánh bao chả hấp dẫn', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1746324093/food1_vp36jg.png', 'Bánh bao chả'),
-    (5, 6, 'Trà đào mát lạnh, thơm ngon', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1746324093/food1_vp36jg.png', 'Trà đào');
+    (1, 1, 'Bánh mì thịt nướng ngon tuyệt', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1747038004/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1_y5yh10.jpg', 'Bánh mì thịt nướng'),
+    (2, 2, 'Phở bò tái chín đậm đà', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1747038004/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1_y5yh10.jpg', 'Phở bò tái'),
+    (2, 3, 'Bún chả truyền thống Hà Nội', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1747038004/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1_y5yh10.jpg', 'Bún chả'),
+    (3, 4, 'Xôi gà thơm ngon', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1747038004/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1_y5yh10.jpg', 'Xôi gà'),
+    (4, 5, 'Bánh bao chả hấp dẫn', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1747038004/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1_y5yh10.jpg', 'Bánh bao chả'),
+    (5, 6, 'Trà đào mát lạnh, thơm ngon', 'https://res.cloudinary.com/dwfaw3iit/image/upload/v1747038004/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1_y5yh10.jpg', 'Trà đào');
 
 -- Food 1: Bánh mì thịt nướng
 INSERT INTO `fastbreakfastdb_demo`.`food_size`
     (`discount_percentage`, `price`, `stock`, `food_id`, `id`, `size`)
 VALUES
-    (0,    2.99, 50, 1,  1, 'S'),
-    (5.0,  3.99, 40, 1,  2, 'M'),
-    (7.5,  4.99, 30, 1,  3, 'L'),
-    (10.0, 5.99, 20, 1,  4, 'XL');
+    (0,    10000, 50, 1,  1, 'S'),
+    (5.0,  15000, 40, 1,  2, 'M'),
+    (7.5,  20000, 30, 1,  3, 'L'),
+    (10.0, 25000, 20, 1,  4, 'XL');
 
 -- Food 2: Phở bò tái
 INSERT INTO `fastbreakfastdb_demo`.`food_size`
     (`discount_percentage`, `price`, `stock`, `food_id`, `id`, `size`)
 VALUES
-    (0,    5.99, 50, 2,  5, 'S'),
-    (5.0,  6.99, 40, 2,  6, 'M'),
-    (7.5,  7.99, 30, 2,  7, 'L'),
-    (10.0, 8.99, 20, 2,  8, 'XL');
+    (0,    15000, 50, 2,  5, 'S'),
+    (5.0,  25000, 40, 2,  6, 'M'),
+    (7.5,  30000, 30, 2,  7, 'L'),
+    (10.0, 35000, 20, 2,  8, 'XL');
 
 -- Food 3: Bún chả
 INSERT INTO `fastbreakfastdb_demo`.`food_size`
     (`discount_percentage`, `price`, `stock`, `food_id`, `id`, `size`)
 VALUES
-    (0,    4.99, 50, 3,  9,  'S'),
-    (5.0,  5.99, 40, 3,  10, 'M'),
-    (7.5,  6.99, 30, 3,  11, 'L'),
-    (10.0, 7.99, 20, 3,  12, 'XL');
+    (0,    15000, 50, 3,  9,  'S'),
+    (5.0,  20000, 40, 3,  10, 'M'),
+    (7.5,  25000, 30, 3,  11, 'L'),
+    (10.0, 30000, 20, 3,  12, 'XL');
 
 -- Food 4: Xôi gà
 INSERT INTO `fastbreakfastdb_demo`.`food_size`
     (`discount_percentage`, `price`, `stock`, `food_id`, `id`, `size`)
 VALUES
-    (0,    3.49, 50, 4,  13, 'S'),
-    (5.0,  4.49, 40, 4,  14, 'M'),
-    (7.0,  5.49, 30, 4,  15, 'L'),
-    (10.0, 6.49, 20, 4,  16, 'XL');
+    (0,    12000, 50, 4,  13, 'S'),
+    (5.0,  18000, 40, 4,  14, 'M'),
+    (7.0,  22000, 30, 4,  15, 'L'),
+    (10.0, 27000, 20, 4,  16, 'XL');
 
 -- Food 5: Bánh bao chả
 INSERT INTO `fastbreakfastdb_demo`.`food_size`
     (`discount_percentage`, `price`, `stock`, `food_id`, `id`, `size`)
 VALUES
-    (0,    2.49, 50, 5,  17, 'S'),
-    (5.0,  3.49, 40, 5,  18, 'M'),
-    (7.5,  4.49, 30, 5,  19, 'L'),
-    (10.0, 5.49, 20, 5,  20, 'XL');
+    (0,    10000, 50, 5,  17, 'S'),
+    (5.0,  12000, 40, 5,  18, 'M'),
+    (7.5,  15000, 30, 5,  19, 'L'),
+    (10.0, 18000, 20, 5,  20, 'XL');
 
 -- Food 6: Trà đào
 INSERT INTO `fastbreakfastdb_demo`.`food_size`
     (`discount_percentage`, `price`, `stock`, `food_id`, `id`, `size`)
 VALUES
-    (0,    1.99, 50, 6,  21, 'S'),
-    (5.0,  2.49, 40, 6,  22, 'M'),
-    (7.5,  2.99, 30, 6,  23, 'L'),
-    (10.0, 3.49, 20, 6,  24, 'XL');
+    (0,    10000, 50, 6,  21, 'S'),
+    (5.0,  12000, 40, 6,  22, 'M'),
+    (7.5,  15000, 30, 6,  23, 'L'),
+    (10.0, 18000, 20, 6,  24, 'XL');
+
 
 -- Insert Carts for Users (each row references a valid fbf_user_id)
 INSERT INTO `fastbreakfastdb_demo`.`cart`

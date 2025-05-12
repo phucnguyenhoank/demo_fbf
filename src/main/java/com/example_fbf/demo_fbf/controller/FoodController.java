@@ -85,4 +85,20 @@ public class FoodController {
         return foodService.findFoodByPriceBetween(pageRequest, min, max);
     }
 
+    @GetMapping("/search/full")
+    public Page<FoodDto> getFoodByFullFilter(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name,asc") String sort,
+            @RequestParam(defaultValue = "0") Double min,
+            @RequestParam(defaultValue = "999999") Double max,
+            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "0") Long categoryId
+    ) {
+        String[] sortParams = sort.split(",");
+        Sort.Direction direction = sortParams[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(direction, sortParams[0]));
+        return foodService.findFoodByConditions(pageRequest, min, max, name, categoryId);
+    }
+
 }

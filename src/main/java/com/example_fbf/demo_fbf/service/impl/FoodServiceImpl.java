@@ -91,4 +91,14 @@ public class FoodServiceImpl implements FoodService {
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy món ăn với id = " + id));
         return foodMapper.toDto(food);
     }
+
+    @Override
+    public Page<FoodDto> findFoodByConditions(Pageable pageable, Double min, Double max, String name, Long categoryId) {
+        Page<Food> foodPage = foodRepository.searchFoods(pageable, min, max, name, categoryId);
+        List<FoodDto> foodDtoList = foodPage
+                .map(foodMapper::toDto)
+                .getContent();
+        return new PageImpl<>(foodDtoList, foodPage.getPageable(), foodPage.getTotalElements());
+    }
+
 }
