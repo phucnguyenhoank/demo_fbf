@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/v1/fbf-orders")
 @RequiredArgsConstructor
@@ -93,6 +95,23 @@ public class FbfOrderController {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(direction, sortParams[0]));
 
         return fbfOrderService.getAllFbfOrdersByFbfUserId(pageRequest, fbfUserId);
+    }
+
+    @GetMapping("/get")
+    private ApiResponse<FbfOrderDto> getOrderByOrderId(@RequestParam(defaultValue = "-1") Long orderId){
+        Optional<FbfOrder> order = fbfOrderService.findOrderByOrderId(orderId);
+        ApiResponse<FbfOrderDto> orderDtoApiResponse = new ApiResponse<>();
+        if (!order.isEmpty()){
+        FbfOrderDto orderDto = fbfOrderMapper.toDto(order.get());
+        orderDtoApiResponse.setData(orderDto);
+        orderDtoApiResponse.setSuccess(true);
+        orderDtoApiResponse.setMessage("Order Controller: Successful");
+        }
+        else {
+            orderDtoApiResponse.setSuccess(false);
+            orderDtoApiResponse.setMessage("Order Controller: Failed");
+        }
+        return orderDtoApiResponse;
     }
 
 }

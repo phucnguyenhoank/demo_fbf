@@ -23,6 +23,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -214,5 +215,9 @@ public class FbfOrderServiceImpl implements FbfOrderService {
         }
     }
 
+    @Override
+    public Optional<FbfOrder> findOrderByOrderId(Long orderId) {
+        return fbfOrderRepository.findById(orderId);
+    }
 }
 
