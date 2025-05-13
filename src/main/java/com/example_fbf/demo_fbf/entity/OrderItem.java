@@ -1,5 +1,6 @@
 package com.example_fbf.demo_fbf.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,12 +20,15 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "food_size_id")
+    @JsonBackReference
     private FoodSize foodSize;
+
     private Double discountedPrice;
     private Double discountPercentage; // Copied from CartItem
     private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "fbf_order_id")
+    @JsonBackReference
     private FbfOrder fbfOrder;
 }
