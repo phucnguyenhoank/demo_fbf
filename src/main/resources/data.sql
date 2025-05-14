@@ -98,10 +98,10 @@ VALUES
 INSERT INTO `fastbreakfastdb_demo`.`cart_item`
     (`discount_percentage`, `price`, `quantity`, `cart_id`, `food_size_id`, `id`)
 VALUES
-    (0.0, 2.99, 1, 1, 1, 1),
-    (0.0, 2.99, 1, 2, 1, 2),
-    (0.0, 2.99, 3, 3, 1, 3),
-    (5.0, 3.99, 2, 3, 2, 4);
+    (0.0, 10000, 1, 1, 1, 1),
+    (0.0, 10000, 1, 2, 1, 2),
+    (0.0, 10000, 3, 3, 1, 3),
+    (5.0, 15000, 2, 3, 2, 4);
 
 -- Insert Discount Codes
 INSERT INTO `fastbreakfastdb_demo`.`discount_code`
@@ -122,7 +122,7 @@ VALUES
 INSERT INTO `fastbreakfastdb_demo`.`order_item`
     (`discount_percentage`, `discounted_price`, `quantity`, `fbf_order_id`, `food_size_id`, `id`)
 VALUES
-    (0.0, 2.99, 2, 1, 2, 1),
-    (0.0, 2.99, 2, 2, 2, 2),
-    (5.0, 2.99, 2, 3, 2, 3);
+    (0.0, 10000, 2, 1, 1, 1),
+    (0.0, 10000, 2, 2, 1, 2),
+    (5.0, 14250, 2, 3, 2, 3);
 

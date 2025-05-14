@@ -141,7 +141,7 @@ public class FbfOrderServiceImpl implements FbfOrderService {
     }
 
     @Override
-    public void undoOrder(Long fbfUserId, Long orderId) {
+    public FbfOrder undoOrder(Long fbfUserId, Long orderId) {
         // Retrieve the order to be canceled
         FbfOrder order = fbfOrderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found with id: " + orderId));
@@ -179,7 +179,10 @@ public class FbfOrderServiceImpl implements FbfOrderService {
         }
 
         // Delete the order, which removes the discount code association
-        fbfOrderRepository.delete(order);
+//        fbfOrderRepository.delete(order);
+
+        order.setStatus(FbfOrderStatus.CANCELED);
+        return fbfOrderRepository.save(order);
     }
 
     @Override
@@ -219,5 +222,35 @@ public class FbfOrderServiceImpl implements FbfOrderService {
     public Optional<FbfOrder> findOrderByOrderId(Long orderId) {
         return fbfOrderRepository.findById(orderId);
     }
+
+    /**
+     * Copy thông tin của một fbfOrder đã có sẵn và đặt trạng thái là CANCELED
+     * @param createdFbfOrderId
+     * @return FbfOrder đã tạo
+     */
+    @Override
+    public FbfOrder createCanceledOrder(Long createdFbfOrderId) {
+        FbfOrder o = fbfOrderRepository.findById(createdFbfOrderId)
+                .orElseThrow(() -> new EntityNotFoundException("Order not created to be canceled"));
+        o.setStatus(FbfOrderStatus.CANCELED);
+        return fbfOrderRepository.save(o);
+    }
+
+    @Override
+    public void deleteCanceledOrder(Long fbfUserId, Long orderId) {
+        FbfOrder order = fbfOrderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with id: " + orderId));
+
+        if (order.getStatus() != FbfOrderStatus.CANCELED) {
+            throw new IllegalStateException("Unauthorized: Order but be canceled to be deleted");
+        }
+
+        if (!order.getFbfUser().getId().equals(fbfUserId)) {
+            throw new IllegalStateException("Unauthorized: Order does not belong to the user");
+        }
+
+        fbfOrderRepository.delete(order);
+    }
+
 }
 

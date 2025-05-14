@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface FbfOrderService {
     FbfOrder createOrder(Long fbfUserId, String phoneNumber, String address, List<Long> selectedCartItemIds, String discountCode);
 
-    void undoOrder(Long fbfUserId, Long orderId);
+    FbfOrder undoOrder(Long fbfUserId, Long orderId);
 
     Page<FbfOrderDto> getAllFbfOrdersByFbfUserId(PageRequest pageRequest, Long fbfUserId);
 
@@ -19,4 +19,8 @@ public interface FbfOrderService {
     void confirmOrder(Long userId, Long orderId);
 
     Optional<FbfOrder> findOrderByOrderId(Long orderId);
+
+    FbfOrder createCanceledOrder(Long createdFbfOrderId);
+
+    void deleteCanceledOrder(Long fbfUserId, Long orderId);
 }

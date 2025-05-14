@@ -40,12 +40,20 @@ public class FbfOrderController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Successfully created FbfOrder", fbfOrderDto));
     }
 
-    @DeleteMapping("/{orderId}/undo")
+    @PostMapping("/{orderId}/undo")
     public ResponseEntity<ApiResponse<String>> undoOrder(@RequestHeader("Authorization") String authHeader, @PathVariable Long orderId) {
         String token = authHeader.substring(7);
         Long fbfUserId = jwtService.getFbfUserIdFromToken(token);
         fbfOrderService.undoOrder(fbfUserId, orderId);
         return ResponseEntity.ok(new ApiResponse<>(true, "Order undone successfully", null));
+    }
+
+    @DeleteMapping("/{orderId}/delete-canceled")
+    public ResponseEntity<ApiResponse<String>> deleteCanceledOrder(@RequestHeader("Authorization") String authHeader, @PathVariable Long orderId) {
+        String token = authHeader.substring(7);
+        Long fbfUserId = jwtService.getFbfUserIdFromToken(token);
+        fbfOrderService.deleteCanceledOrder(fbfUserId, orderId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Canceled order deleted successfully", null));
     }
 
     @PostMapping("/create-undo")
