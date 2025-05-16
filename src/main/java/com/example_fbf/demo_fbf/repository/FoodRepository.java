@@ -14,11 +14,26 @@ import java.util.Optional;
 @Repository
 public interface FoodRepository extends JpaRepository<Food, Long> {
 
-    public Page<Food> findByNameContainingIgnoreCase(PageRequest pageRequest, String namePattern);
-    public Optional<Food> findById(Long id);
-    public Page<Food> findByCategoryId(PageRequest pageRequest, Long id);
-    @Query("SELECT f FROM Food f JOIN f.sizes s WHERE s.price BETWEEN :min AND :max")
-    public Page<Food> findFoodsBySizePriceBetween(Pageable pageable, @Param("min") Double min, @Param("max") Double max);
+    Page<Food> findByNameContainingIgnoreCase(PageRequest pageRequest, String namePattern);
+    Optional<Food> findById(Long id);
+    Page<Food> findByCategoryId(PageRequest pageRequest, Long id);
+    @Query("SELECT f FROM Food f WHERE EXISTS (SELECT s FROM FoodSize s WHERE s.food = f AND s.price BETWEEN :min AND :max)")
+    Page<Food> findFoodsBySizePriceBetween(Pageable pageable, @Param("min") Double min, @Param("max") Double max);
+
+    @Query("""
+    SELECT f FROM Food f 
+        WHERE EXISTS ( 
+            SELECT s FROM FoodSize s 
+            WHERE s.food = f AND s.price BETWEEN :min AND :max 
+        )
+        AND (:name = '' OR LOWER(f.name) LIKE LOWER(CONCAT('%', :name, '%'))) 
+        AND (:categoryId = 0 OR f.category.id = :categoryId) 
+    """)
+    Page<Food> searchFoods(Pageable pageable,
+                           @Param("min") Double min,
+                           @Param("max") Double max,
+                           @Param("name") String name,
+                           @Param("categoryId") Long categoryId);
 
 
 }

@@ -20,4 +20,5 @@ public class FbfOrderDto {
     private Long fbfUserId;
     private DiscountCodeDto discountCode;
     private List<OrderItemDto> items;
+    private String status;
 }

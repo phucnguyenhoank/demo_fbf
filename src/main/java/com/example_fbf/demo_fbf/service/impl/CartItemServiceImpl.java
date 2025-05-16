@@ -138,6 +138,13 @@ public class CartItemServiceImpl implements CartItemService {
         return Optional.ofNullable(cartItemMapper.toDto(cartItemRepository.findByCartIdAndFoodSizeId(cartId, foodSizeId).get()));
     }
 
+    @Override
+    public List<CartItem> findByCartId(Long cartId) {
+        return cartItemRepository.findByCartId(cartId);
+    }
+
+
+
 }
 
 

@@ -12,6 +12,7 @@ public interface FbfOrderMapper {
     FbfOrderDto toDto(FbfOrder fbfOrder);
 
     @Mapping(target = "fbfUser", ignore = true) // Let the service set it using userId
+    @Mapping(target = "status", ignore = true)
     FbfOrder toEntity(FbfOrderDto fbfOrderDto);
 }
 
